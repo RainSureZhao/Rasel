@@ -4,12 +4,15 @@
 
 #ifndef RASEL_ENTRYPOINT_H
 #define RASEL_ENTRYPOINT_H
-#include "Rasel.h"
 #include <iostream>
+#include "Log.h"
 extern std::unique_ptr<Rasel::Application> Rasel::CreateApplication();
 
 int main(int argc, char** argv)
 {
+    Rasel::Log::Init();
+    RZ_CORE_WARN("Initialized Log!");
+    RZ_Client_INFO("Hello1111");
     std::unique_ptr<Rasel::Application> App = Rasel::CreateApplication();
     App->Run();
 }

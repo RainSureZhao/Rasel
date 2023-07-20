@@ -6,13 +6,12 @@
 #define RASEL_APPLICATION_H
 
 #include <memory>
-
 namespace Rasel {
     class Application {
     public:
         Application();
         virtual ~Application();
-        void Run();
+        static void Run();
     };    
     
     // To be defined in CLIENT
