@@ -6,6 +6,7 @@
 #define RASEL_APPLICATION_H
 
 #include <memory>
+
 namespace Rasel {
     class Application {
     public:
