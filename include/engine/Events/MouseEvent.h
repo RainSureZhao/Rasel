@@ -6,7 +6,7 @@
 #define RASEL_MOUSEEVENT_H
 
 #include "Event.h"
-#include <sstream>
+#include "stdafx.h"
 
 namespace Rasel {
     class MouseMovedEvent : public Event {

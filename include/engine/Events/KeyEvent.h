@@ -5,8 +5,9 @@
 #ifndef RASEL_KEYEVENT_H
 #define RASEL_KEYEVENT_H
 
-#include <sstream>
+
 #include "Event.h"
+#include "stdafx.h"
 
 namespace Rasel {
     

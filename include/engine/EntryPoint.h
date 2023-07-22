@@ -4,9 +4,9 @@
 
 #ifndef RASEL_ENTRYPOINT_H
 #define RASEL_ENTRYPOINT_H
-#include <iostream>
+
 #include "Log.h"
-extern std::unique_ptr<Rasel::Application> Rasel::CreateApplication();
+#include "stdafx.h"
 
 int main(int argc, char** argv)
 {

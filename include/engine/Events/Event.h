@@ -4,8 +4,7 @@
 
 #ifndef RASEL_EVENT_H
 #define RASEL_EVENT_H
-#include <string>
-#include <functional>
+#include "stdafx.h"
 
 namespace Rasel {
 #define BIT(x) (1 << x)

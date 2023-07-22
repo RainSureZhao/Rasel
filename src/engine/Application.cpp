@@ -5,7 +5,7 @@
 #include "Application.h"
 #include "ApplicationEvent.h"
 #include "Log.h"
-#include "Event.h"
+
 namespace Rasel{
     Application::Application() = default;
     

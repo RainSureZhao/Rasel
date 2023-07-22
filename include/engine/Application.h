@@ -5,7 +5,7 @@
 #ifndef RASEL_APPLICATION_H
 #define RASEL_APPLICATION_H
 
-#include <memory>
+#include "stdafx.h"
 
 namespace Rasel {
     class Application {
