@@ -6,13 +6,16 @@
 #define RASEL_APPLICATION_H
 
 #include "stdafx.h"
-
+#include "Window.h"
 namespace Rasel {
     class Application {
     public:
         Application();
         virtual ~Application();
-        static void Run();
+        void Run();
+    private:
+        std::unique_ptr<Window> m_Window;
+        bool m_Running = true;
     };    
     
     // To be defined in CLIENT
