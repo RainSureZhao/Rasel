@@ -7,13 +7,18 @@
 
 #include "stdafx.h"
 #include "Window.h"
+#include "Event.h"
+#include "ApplicationEvent.h"
 namespace Rasel {
     class Application {
     public:
         Application();
         virtual ~Application();
+        void OnEvent(Event& e);
         void Run();
     private:
+        bool OnWindowClosed(WindowCloseEvent& e);
+        
         std::unique_ptr<Window> m_Window;
         bool m_Running = true;
     };    

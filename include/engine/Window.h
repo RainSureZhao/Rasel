@@ -5,6 +5,8 @@
 #ifndef RASEL_WINDOW_H
 #define RASEL_WINDOW_H
 
+#include <utility>
+
 #include "stdafx.h"
 #include "Event.h"
 
@@ -15,7 +17,7 @@ namespace Rasel {
         unsigned int Width;
         unsigned int Height;
         
-        explicit WindowProps(const std::string &title = "Rasel Engine", 
+        explicit WindowProps(const std::string& title = "Rasel Engine", 
                     unsigned int width = 1280, unsigned int height = 720) : Title(title), Width(width), Height(height) {}
     };
     

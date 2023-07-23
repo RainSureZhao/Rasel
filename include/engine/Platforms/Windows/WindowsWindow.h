@@ -8,6 +8,9 @@
 #include "Window.h"
 #include "GLFW/glfw3.h"
 #include "Log.h"
+#include "ApplicationEvent.h"
+#include "KeyEvent.h"
+#include "MouseEvent.h"
 namespace Rasel {
 
     class WindowsWindow : public Window {
