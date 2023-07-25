@@ -2,7 +2,7 @@
 // Created by 赵润朔 on 2023/7/16.
 //
 #include "Rasel.h"
-
+#include "ImGuiLayer.h"
 class ExampleLayer : public Rasel::Layer {
 public:
     ExampleLayer() : Layer("Example") {}
@@ -18,6 +18,7 @@ class SandBox : public Rasel::Application{
 public:
     SandBox() {
         PushLayer(std::make_unique<ExampleLayer>());
+        PushOverlay(std::make_unique<Rasel::ImGuiLayer>());
     }
     ~SandBox() = default;
 };

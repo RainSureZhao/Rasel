@@ -13,7 +13,6 @@
 #include "KeyEvent.h"
 #include "MouseEvent.h"
 
-
 namespace Rasel {
 
     class WindowsWindow : public Window {

@@ -17,9 +17,9 @@ file(GLOB SANDBOX "${PROJECT_SOURCE_DIR}/src/SandBox/*.cpp")
 file(GLOB EVENT "${PROJECT_SOURCE_DIR}/include/engine/Events/*.h")
 file(GLOB PLATFORM_WINDOW "${PROJECT_SOURCE_DIR}/include/engine/Platforms/Windows/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Platforms/Windows/*.cpp")
 file(GLOB LAYER "${PROJECT_SOURCE_DIR}/include/engine/Layer/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Layer/*.cpp")
+file(GLOB IMGUI "${PROJECT_SOURCE_DIR}/include/engine/ImGui/*.h" "${PROJECT_SOURCE_DIR}/src/engine/ImGui/*.cpp")
 
-
-add_executable(${PROJECT_NAME} ${ENGINE} ${RASEL} ${SANDBOX} ${EVENT} ${PLATFORM_WINDOW} ${LAYER})
+add_executable(${PROJECT_NAME} ${ENGINE} ${RASEL} ${SANDBOX} ${EVENT} ${PLATFORM_WINDOW} ${LAYER} ${IMGUI})
 
 # 添加头文件路径
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -27,7 +27,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include/engine"
         "${PROJECT_SOURCE_DIR}/include/engine/Events"
         "${PROJECT_SOURCE_DIR}/include/engine/Platforms/Windows"
-        "${PROJECT_SOURCE_DIR}/include/engine/Layer")
+        "${PROJECT_SOURCE_DIR}/include/engine/Layer"
+        "${PROJECT_SOURCE_DIR}/include/engine/ImGui")
 
 # 配置预编译头文件
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PRECOMPILED_HEADER})

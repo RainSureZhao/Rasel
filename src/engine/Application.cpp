@@ -8,8 +8,11 @@
 #include "GLFW/glfw3.h"
 namespace Rasel{
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+    std::shared_ptr<Application> Application::s_Instance = nullptr;
     Application::Application()
     {
+        RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
+        s_Instance = std::shared_ptr<Application>(this);
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
     }
@@ -20,6 +23,8 @@ namespace Rasel{
         while(m_Running) {
             glClearColor(0.2, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
+            for(auto &layer : m_LayerStack)
+                layer->OnUpdate();
             m_Window->OnUpdate();
         }
     }
@@ -41,10 +46,12 @@ namespace Rasel{
     }
 
     void Application::PushLayer(std::unique_ptr<Layer> layer) {
+        layer->OnAttach();
         m_LayerStack.PushLayer(std::move(layer));
     }
 
     void Application::PushOverlay(std::unique_ptr<Layer> overlay) {
+        overlay->OnAttach();
         m_LayerStack.PushOverlay(std::move(overlay));
     }
 }
