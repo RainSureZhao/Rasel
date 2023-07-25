@@ -9,6 +9,8 @@
 #include "Window.h"
 #include "Event.h"
 #include "ApplicationEvent.h"
+#include "Layer.h"
+#include "LayerStack.h"
 namespace Rasel {
     class Application {
     public:
@@ -16,11 +18,15 @@ namespace Rasel {
         virtual ~Application();
         void OnEvent(Event& e);
         void Run();
+        
+        void PushLayer(std::unique_ptr<Layer> layer);
+        void PushOverlay(std::unique_ptr<Layer> overlay);
     private:
         bool OnWindowClosed(WindowCloseEvent& e);
         
         std::unique_ptr<Window> m_Window;
         bool m_Running = true;
+        LayerStack m_LayerStack;
     };    
     
     // To be defined in CLIENT

@@ -16,15 +16,18 @@ file(GLOB RASEL "${PROJECT_SOURCE_DIR}/include/Rasel.h")
 file(GLOB SANDBOX "${PROJECT_SOURCE_DIR}/src/SandBox/*.cpp")
 file(GLOB EVENT "${PROJECT_SOURCE_DIR}/include/engine/Events/*.h")
 file(GLOB PLATFORM_WINDOW "${PROJECT_SOURCE_DIR}/include/engine/Platforms/Windows/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Platforms/Windows/*.cpp")
+file(GLOB LAYER "${PROJECT_SOURCE_DIR}/include/engine/Layer/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Layer/*.cpp")
 
-add_executable(${PROJECT_NAME} ${ENGINE} ${RASEL} ${SANDBOX} ${EVENT} ${PLATFORM_WINDOW})
+
+add_executable(${PROJECT_NAME} ${ENGINE} ${RASEL} ${SANDBOX} ${EVENT} ${PLATFORM_WINDOW} ${LAYER})
 
 # 添加头文件路径
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         "${PROJECT_SOURCE_DIR}/include/engine"
         "${PROJECT_SOURCE_DIR}/include/engine/Events"
-        "${PROJECT_SOURCE_DIR}/include/engine/Platforms/Windows")
+        "${PROJECT_SOURCE_DIR}/include/engine/Platforms/Windows"
+        "${PROJECT_SOURCE_DIR}/include/engine/Layer")
 
 # 配置预编译头文件
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PRECOMPILED_HEADER})

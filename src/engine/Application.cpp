@@ -27,11 +27,24 @@ namespace Rasel{
     void Application::OnEvent(Event &e) {
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+        for(auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
+            (*--it)->OnEvent(e);
+            if(e.Handled)
+                break;
+        }
         RZ_CORE_TRACE("{0}", e);
     }
 
     bool Application::OnWindowClosed(WindowCloseEvent &e) {
         m_Running = false;
         return true;
+    }
+
+    void Application::PushLayer(std::unique_ptr<Layer> layer) {
+        m_LayerStack.PushLayer(std::move(layer));
+    }
+
+    void Application::PushOverlay(std::unique_ptr<Layer> overlay) {
+        m_LayerStack.PushOverlay(std::move(overlay));
     }
 }

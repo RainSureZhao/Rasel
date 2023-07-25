@@ -12,7 +12,6 @@ int main(int argc, char** argv)
 {
     Rasel::Log::Init();
     RZ_CORE_WARN("Initialized Log!");
-    RZ_Client_INFO("Hello1111");
     std::unique_ptr<Rasel::Application> App = Rasel::CreateApplication();
     App->Run();
 }
