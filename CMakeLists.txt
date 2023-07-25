@@ -34,6 +34,7 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE ${PRECOMPILED_HEADER})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE glad)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE stb)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)

@@ -15,6 +15,11 @@ if(NOT TARGET glfw)
     set_target_properties(glfw PROPERTIES FOLDER ${third_party_dir}/glfw)
 endif()
 
+if(NOT TARGET glad)
+    include(glad.cmake)
+    set_target_properties(glad PROPERTIES FOLDER ${third_party_dir}/glad)
+endif()
+
 if (NOT TARGET spdlog)
     option(SPDLOG_BUILD_EXAMPLE "" OFF)
     option(SPDLOG_INSTALL "" OFF)
