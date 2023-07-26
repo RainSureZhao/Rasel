@@ -117,6 +117,13 @@ namespace Rasel {
             MouseMovedEvent event(static_cast<float>(xPos), static_cast<float>(yPos));
             data.EventCallback(event);
         });
+        
+        glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keycode) {
+           WindowData &data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+           
+           KeyTypedEvent event(keycode);
+           data.EventCallback(event);
+        });
     }
     
     void WindowsWindow::Shutdown() {
