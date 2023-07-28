@@ -11,6 +11,7 @@
 #include "ApplicationEvent.h"
 #include "Layer.h"
 #include "LayerStack.h"
+#include "Input.h"
 
 namespace Rasel {
     class Application {

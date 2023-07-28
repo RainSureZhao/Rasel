@@ -3,9 +3,9 @@
 //
         
 #include "Application.h"
-#include "ApplicationEvent.h"
 #include "Log.h"
 #include "GLFW/glfw3.h"
+
 namespace Rasel{
     std::shared_ptr<Application> Application::s_Instance = nullptr;
     Application::Application()

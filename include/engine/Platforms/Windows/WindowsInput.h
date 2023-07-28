@@ -6,6 +6,7 @@
 #define RASEL_WINDOWSINPUT_H
 
 #include "Input.h"
+
 namespace Rasel {
 
     class WindowsInput : public Input{
