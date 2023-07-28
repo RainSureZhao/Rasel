@@ -7,14 +7,13 @@
 #include "Log.h"
 #include "GLFW/glfw3.h"
 namespace Rasel{
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
     std::shared_ptr<Application> Application::s_Instance = nullptr;
     Application::Application()
     {
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
         s_Instance = std::shared_ptr<Application>(this);
         m_Window = std::unique_ptr<Window>(Window::Create());
-        m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+        m_Window->SetEventCallback([this](auto && PH1) { Application::OnEvent(std::forward<decltype(PH1)>(PH1)); });
     }
     
     Application::~Application() = default;
@@ -31,7 +30,7 @@ namespace Rasel{
 
     void Application::OnEvent(Event &e) {
         EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+        dispatcher.Dispatch<WindowCloseEvent>([this](auto &&PH1){ return OnWindowClosed(std::forward<decltype(PH1)>(PH1));});
         for(auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
             (*--it)->OnEvent(e);
             if(e.Handled)

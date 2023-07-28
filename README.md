@@ -2,7 +2,7 @@
 A simple game engine, made with Chreno's tutorial
 
 ## IDE
-Clion 2023.1.5 
+Clion 2023.2.0
 
 ## Compiler
 MinGW 13.1.0
