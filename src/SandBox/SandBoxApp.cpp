@@ -3,7 +3,6 @@
 //
 #include "Rasel.h"
 
-
 class ExampleLayer : public Rasel::Layer {
 public:
     ExampleLayer() : Layer("Example") {}
