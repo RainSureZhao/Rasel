@@ -14,6 +14,9 @@ namespace Rasel{
         s_Instance = std::shared_ptr<Application>(this);
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback([this](auto && PH1) { Application::OnEvent(std::forward<decltype(PH1)>(PH1)); });
+        
+         m_ImGuiLayer = std::make_unique<ImGuiLayer>();
+         PushOverlay(std::move(m_ImGuiLayer));
     }
     
     Application::~Application() = default;
@@ -24,6 +27,10 @@ namespace Rasel{
             glClear(GL_COLOR_BUFFER_BIT);
             for(auto &layer : m_LayerStack)
                 layer->OnUpdate();
+             m_ImGuiLayer->Begin();
+            for(auto &layer : m_LayerStack)
+                layer->OnImGuiRender();
+             m_ImGuiLayer->End();
             m_Window->OnUpdate();
         }
     }

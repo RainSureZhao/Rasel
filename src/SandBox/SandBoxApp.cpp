@@ -2,6 +2,7 @@
 // Created by 赵润朔 on 2023/7/16.
 //
 #include "Rasel.h"
+#include "imgui.h"
 
 class ExampleLayer : public Rasel::Layer {
 public:
@@ -21,18 +22,23 @@ public:
             RZ_CORE_TRACE("{0}", (char)e.GetKeyCode());
         }
     }
+
+    void OnImGuiRender() override {
+        ImGui::Begin("Test");
+        ImGui::Text("Hello World");
+        ImGui::End();
+    }
+
 };
 
 class SandBox : public Rasel::Application{
 public:
-    SandBox() {
+    SandBox() { 
         PushLayer(std::make_unique<ExampleLayer>());
-        PushOverlay(std::make_unique<Rasel::ImGuiLayer>());
     }
     ~SandBox() = default;
 };
 
 std::unique_ptr<Rasel::Application> Rasel::CreateApplication() {
-    
     return std::make_unique<SandBox>();
 }

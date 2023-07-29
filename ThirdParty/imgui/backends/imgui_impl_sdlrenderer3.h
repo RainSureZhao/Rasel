@@ -10,9 +10,12 @@
 // Implemented features:
 //  [X] Renderer: User texture binding. Use 'SDL_Texture*' as ImTextureID. Read the FAQ about ImTextureID!
 //  [X] Renderer: Large meshes support (64k+ vertices) with 16-bit indices.
+// Missing features:
+//  [ ] Renderer: Multi-viewport support (multiple windows).
 
 #pragma once
 #include "imgui.h"      // IMGUI_IMPL_API
+#ifndef IMGUI_DISABLE
 
 struct SDL_Renderer;
 
@@ -26,3 +29,5 @@ IMGUI_IMPL_API bool     ImGui_ImplSDLRenderer3_CreateFontsTexture();
 IMGUI_IMPL_API void     ImGui_ImplSDLRenderer3_DestroyFontsTexture();
 IMGUI_IMPL_API bool     ImGui_ImplSDLRenderer3_CreateDeviceObjects();
 IMGUI_IMPL_API void     ImGui_ImplSDLRenderer3_DestroyDeviceObjects();
+
+#endif // #ifndef IMGUI_DISABLE

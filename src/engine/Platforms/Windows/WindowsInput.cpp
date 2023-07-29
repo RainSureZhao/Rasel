@@ -3,9 +3,7 @@
 //
 
 #include "WindowsInput.h"
-#include "stdafx.h"
-#include "GLFW/glfw3.h"
-#include "Application.h"
+
 
 namespace Rasel {
     Input* Input::s_Instance = new WindowsInput();

@@ -7,6 +7,7 @@
 
 #include "Layer.h"
 #include "stdafx.h"
+
 namespace Rasel {
     using LayerVectorIter = std::vector<std::unique_ptr<Layer>>::iterator;
     class LayerStack {
@@ -25,7 +26,7 @@ namespace Rasel {
         [[nodiscard]] int size() const {return m_Layers.size();}
     private:
         std::vector<std::unique_ptr<Layer>> m_Layers;
-        LayerVectorIter m_LayerInsert;
+        unsigned int m_LayerInsertIndex = 0;
     };
 
 } // Rasel

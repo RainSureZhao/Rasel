@@ -6,6 +6,9 @@
 #define RASEL_WINDOWSINPUT_H
 
 #include "Input.h"
+#include "stdafx.h"
+#include "GLFW/glfw3.h"
+#include "Application.h"
 
 namespace Rasel {
 

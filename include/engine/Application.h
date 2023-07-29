@@ -12,6 +12,7 @@
 #include "Layer.h"
 #include "LayerStack.h"
 #include "Input.h"
+#include "ImGuiLayer.h"
 
 namespace Rasel {
     class Application {
@@ -27,10 +28,12 @@ namespace Rasel {
         inline Window& GetWindow() { return *m_Window; }
         
         inline static Application& Get() { return *s_Instance;}
+        
     private:
         bool OnWindowClosed(WindowCloseEvent& e);
         
         std::unique_ptr<Window> m_Window;
+        std::unique_ptr<ImGuiLayer> m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
         

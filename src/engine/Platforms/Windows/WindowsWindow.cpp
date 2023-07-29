@@ -1,7 +1,7 @@
 //
 // Created by 赵润朔 on 2023/7/22.
 //
-#include "stdafx.h"
+
 #include "WindowsWindow.h"
 
 namespace Rasel {

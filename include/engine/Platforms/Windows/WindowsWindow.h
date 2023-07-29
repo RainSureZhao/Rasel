@@ -12,6 +12,7 @@
 #include "ApplicationEvent.h"
 #include "KeyEvent.h"
 #include "MouseEvent.h"
+#include "stdafx.h"
 
 namespace Rasel {
 
