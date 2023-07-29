@@ -6,13 +6,8 @@
 #define RASEL_WINDOWSWINDOW_H
 
 #include "Window.h"
-#include "glad/glad.h"
+#include "GraphicsContext.h"
 #include "GLFW/glfw3.h"
-#include "Log.h"
-#include "ApplicationEvent.h"
-#include "KeyEvent.h"
-#include "MouseEvent.h"
-#include "stdafx.h"
 
 namespace Rasel {
 
@@ -39,7 +34,7 @@ namespace Rasel {
         
     private:
         GLFWwindow * m_Window;
-        
+        GraphicsContext *m_Context;
         struct WindowData
         {
             std::string Title;

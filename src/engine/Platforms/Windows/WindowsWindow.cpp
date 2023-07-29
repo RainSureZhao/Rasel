@@ -3,6 +3,12 @@
 //
 
 #include "WindowsWindow.h"
+#include "stdafx.h"
+#include "OpenGLContext.h"
+#include "ApplicationEvent.h"
+#include "MouseEvent.h"
+#include "KeyEvent.h"
+#include "Log.h"
 
 namespace Rasel {
     static bool s_GLFWInitialized = false;
@@ -39,9 +45,10 @@ namespace Rasel {
         }
         
         m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_Window);
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        RZ_CORE_ASSERT(status, "Failed to initialize Glad!");
+        
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->Init();
+        
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
         
@@ -132,7 +139,7 @@ namespace Rasel {
     
     void WindowsWindow::OnUpdate() {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_Context->SwapBuffers();
     }
     
     void WindowsWindow::SetVSync(bool enabled) {
