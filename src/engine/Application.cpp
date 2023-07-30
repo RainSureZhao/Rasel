@@ -4,6 +4,7 @@
         
 #include "Application.h"
 #include "Log.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace Rasel{
@@ -11,12 +12,49 @@ namespace Rasel{
     Application::Application()
     {
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
+        std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
         s_Instance = std::shared_ptr<Application>(this);
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback([this](auto && PH1) { Application::OnEvent(std::forward<decltype(PH1)>(PH1)); });
         
          m_ImGuiLayer = std::make_unique<ImGuiLayer>();
          PushOverlay(std::move(m_ImGuiLayer));
+         
+         glGenVertexArrays(1, &m_VertexArray);
+         glBindVertexArray(m_VertexArray);
+         
+         glGenBuffers(1, &m_VertexArray);
+         glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+         
+         std::vector<float> vertices {
+             -0.5f, -0.5f, 0.0f,
+              0.5f, -0.5f, 0.0f,
+              0.0f,  0.5f, 0.0f
+         };
+         
+         glBufferData(GL_ARRAY_BUFFER, sizeof (float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+         
+         glEnableVertexAttribArray(0);
+         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+         
+         glGenBuffers(1, &m_IndexBuffer);
+         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+         
+         std::vector<unsigned int> indices {
+             0, 1, 2
+         };
+         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
+         
+         
+         
+         std::ifstream vertexShaderFile(R"(shader\VertexShader.glsl)");
+         std::ifstream fragmentShaderFile(R"(shader\FragmentShader.glsl)");
+         
+         std::string VertexShaderSource((std::istreambuf_iterator<char>(vertexShaderFile)), std::istreambuf_iterator<char>());
+         std::string FragmentShaderSource((std::istreambuf_iterator<char>(fragmentShaderFile)), std::istreambuf_iterator<char>());
+         
+         
+         m_Shader = std::make_unique<Shader>(VertexShaderSource, FragmentShaderSource);
     }
     
     Application::~Application() = default;
@@ -25,6 +63,9 @@ namespace Rasel{
         while(m_Running) {
             glClearColor(0.2, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
+            m_Shader->Bind();
+            glBindVertexArray(m_VertexArray);
+            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
             for(auto &layer : m_LayerStack)
                 layer->OnUpdate();
              m_ImGuiLayer->Begin();

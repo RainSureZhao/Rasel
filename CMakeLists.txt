@@ -20,8 +20,8 @@ file(GLOB LAYER "${PROJECT_SOURCE_DIR}/include/engine/Layer/*.h" "${PROJECT_SOUR
 file(GLOB IMGUI "${PROJECT_SOURCE_DIR}/include/engine/ImGui/*.h" "${PROJECT_SOURCE_DIR}/src/engine/ImGui/*.cpp")
 file(GLOB RENDERER "${PROJECT_SOURCE_DIR}/include/engine/Renderer/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Renderer/*.cpp"
      "${PROJECT_SOURCE_DIR}/include/engine/Renderer/OpenGL/*.h"  "${PROJECT_SOURCE_DIR}/src/engine/Renderer/OpenGL/*.cpp" )
-
-add_executable(${PROJECT_NAME} ${ENGINE} ${RASEL} ${SANDBOX} ${EVENT} ${PLATFORM_WINDOW} ${LAYER} ${IMGUI} ${RENDERER})
+file(GLOB SHADER "${PROJECT_SOURCE_DIR}/include/engine/Shader/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Shader/*.cpp")
+add_executable(${PROJECT_NAME} ${ENGINE} ${RASEL} ${SANDBOX} ${EVENT} ${PLATFORM_WINDOW} ${LAYER} ${IMGUI} ${RENDERER} ${SHADER})
 
 # 添加头文件路径
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -32,7 +32,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include/engine/Layer"
         "${PROJECT_SOURCE_DIR}/include/engine/ImGui"
         "${PROJECT_SOURCE_DIR}/include/engine/Renderer"
-        "${PROJECT_SOURCE_DIR}/include/engine/Renderer/OpenGL")
+        "${PROJECT_SOURCE_DIR}/include/engine/Renderer/OpenGL"
+        "${PROJECT_SOURCE_DIR}/include/engine/Shader")
 
 # 配置预编译头文件
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PRECOMPILED_HEADER})

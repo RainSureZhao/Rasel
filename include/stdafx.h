@@ -6,6 +6,7 @@
 #define RASEL_STDAFX_H
 
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <cstring>
 #include <vector>
@@ -13,5 +14,6 @@
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>
-
+#include <cstdint>
+#include <filesystem>
 #endif //RASEL_STDAFX_H

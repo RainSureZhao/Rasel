@@ -13,6 +13,7 @@
 #include "LayerStack.h"
 #include "Input.h"
 #include "ImGuiLayer.h"
+#include "Shader.h"
 
 namespace Rasel {
     class Application {
@@ -36,6 +37,9 @@ namespace Rasel {
         std::unique_ptr<ImGuiLayer> m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
+        
+        unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+        std::unique_ptr<Shader> m_Shader;
         
     private:
         static std::shared_ptr<Application> s_Instance;
