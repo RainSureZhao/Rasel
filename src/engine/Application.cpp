@@ -23,8 +23,6 @@ namespace Rasel{
          glGenVertexArrays(1, &m_VertexArray);
          glBindVertexArray(m_VertexArray);
          
-         glGenBuffers(1, &m_VertexArray);
-         glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
          
          std::vector<float> vertices {
              -0.5f, -0.5f, 0.0f,
@@ -32,18 +30,18 @@ namespace Rasel{
               0.0f,  0.5f, 0.0f
          };
          
+         m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices.data(), sizeof(float) * vertices.size()));
+         
          glBufferData(GL_ARRAY_BUFFER, sizeof (float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
          
          glEnableVertexAttribArray(0);
          glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
          
-         glGenBuffers(1, &m_IndexBuffer);
-         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-         
          std::vector<unsigned int> indices {
              0, 1, 2
          };
-         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
+         m_IndexBuffer = std::unique_ptr<IndexBuffer>(IndexBuffer::Create(indices.data(), indices.size()));
+         
          
          
          
@@ -65,7 +63,7 @@ namespace Rasel{
             glClear(GL_COLOR_BUFFER_BIT);
             m_Shader->Bind();
             glBindVertexArray(m_VertexArray);
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, static_cast<int>(m_IndexBuffer->GetCount()), GL_UNSIGNED_INT, nullptr);
             for(auto &layer : m_LayerStack)
                 layer->OnUpdate();
              m_ImGuiLayer->Begin();

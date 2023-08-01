@@ -13,7 +13,7 @@ namespace Rasel {
 
     class OpenGLContext : public GraphicsContext{
     public:
-        OpenGLContext(GLFWwindow* windowHandle);
+        explicit OpenGLContext(GLFWwindow* windowHandle);
         
         virtual void Init() override;
         virtual void SwapBuffers() override;
