@@ -9,6 +9,26 @@
 
 namespace Rasel{
     std::shared_ptr<Application> Application::s_Instance = nullptr;
+    
+    static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
+        switch(type) {
+            case ShaderDataType::Float:    return GL_FLOAT;
+            case ShaderDataType::Float2:   return GL_FLOAT;
+            case ShaderDataType::Float3:   return GL_FLOAT;
+            case ShaderDataType::Float4:   return GL_FLOAT;
+            case ShaderDataType::Mat3:     return GL_FLOAT;
+            case ShaderDataType::Mat4:     return GL_FLOAT;
+            case ShaderDataType::Int:      return GL_INT;
+            case ShaderDataType::Int2:     return GL_INT;
+            case ShaderDataType::Int3:     return GL_INT;
+            case ShaderDataType::Int4:     return GL_INT;
+            case ShaderDataType::Bool:     return GL_BOOL;
+        }
+        
+        RZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+        return 0;
+    }
+    
     Application::Application()
     {
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -25,17 +45,28 @@ namespace Rasel{
          
          
          std::vector<float> vertices {
-             -0.5f, -0.5f, 0.0f,
-              0.5f, -0.5f, 0.0f,
-              0.0f,  0.5f, 0.0f
+             -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+              0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+              0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
          };
          
          m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices.data(), sizeof(float) * vertices.size()));
-         
-         glBufferData(GL_ARRAY_BUFFER, sizeof (float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
-         
-         glEnableVertexAttribArray(0);
-         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+        {
+            BufferLayout layout ({
+                {"a_Position", ShaderDataType::Float3},
+                {"a_Color", ShaderDataType::Float4}
+            });
+            m_VertexBuffer->SetLayout(layout);
+        }
+
+        uint32_t index = 0;
+        const auto& layout = m_VertexBuffer->GetLayout();
+        for(const auto& element : layout) {
+            glEnableVertexAttribArray(index);
+            glVertexAttribPointer(index, static_cast<GLint>(element.GetComponentCount()), ShaderDataTypeToOpenGLBaseType(element.Type), 
+                                  element.Normalized ? GL_TRUE : GL_FALSE, static_cast<GLint>(layout.GetStride()), reinterpret_cast<const void*>(element.Offset));
+            index ++;
+        }
          
          std::vector<unsigned int> indices {
              0, 1, 2
