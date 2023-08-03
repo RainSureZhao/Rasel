@@ -11,7 +11,7 @@ namespace Rasel {
     class OpenGLVertexBuffer : public VertexBuffer {
     public:
         OpenGLVertexBuffer(float* vertices, uint32_t size);
-        virtual ~OpenGLVertexBuffer();
+        virtual ~OpenGLVertexBuffer() override;
         
         virtual void Bind() const override;
         virtual void UnBind() const override;

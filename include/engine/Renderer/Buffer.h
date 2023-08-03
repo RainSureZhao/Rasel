@@ -71,7 +71,7 @@ namespace Rasel {
     
     class BufferLayout {
     public:
-        BufferLayout()= default;
+        BufferLayout() = default;
 
         BufferLayout(const std::initializer_list<BufferElement> &elements) : m_Element(elements) {
             CalculateOffsetAndStride();

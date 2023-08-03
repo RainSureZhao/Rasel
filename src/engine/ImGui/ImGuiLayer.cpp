@@ -11,8 +11,6 @@
 
 namespace Rasel {
     ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
-
-    ImGuiLayer::~ImGuiLayer() = default;
     
     void ImGuiLayer::OnAttach() {
         IMGUI_CHECKVERSION();
