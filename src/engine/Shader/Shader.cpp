@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "glad/glad.h"
 #include "Log.h"
+#include "glm/gtc/type_ptr.hpp"
 namespace Rasel {
     Rasel::Shader::Shader(const std::string &vertexSrc, const std::string &fragmentSrc) {
         auto VertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -91,5 +92,10 @@ namespace Rasel {
 
     void Rasel::Shader::UnBind() const {
         glUseProgram(0);
+    }
+
+    void Shader::UploadUniformMat4(const std::string &name, const glm::mat4 &matrix) {
+        auto location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 } // Rasel

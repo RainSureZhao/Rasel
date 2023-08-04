@@ -13,7 +13,7 @@ namespace Rasel{
     std::shared_ptr<Application> Application::s_Instance = nullptr;
     
     
-    Application::Application()
+    Application::Application() : m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
@@ -90,13 +90,13 @@ namespace Rasel{
             RendererCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
             RendererCommand::Clear();
             
-            Renderer::BeginScene();
+            m_Camera.SetPosition({0.5f, 0.5f, 0.0f});
+            m_Camera.SetRotation(45.0f);
+            Renderer::BeginScene(m_Camera);
             
-            m_BlueShader->Bind();
-            Renderer::Submit(m_SquareVA);
+            Renderer::Submit(m_BlueShader, m_SquareVA);
             
-            m_Shader->Bind();
-            Renderer::Submit(m_VertexArray);
+            Renderer::Submit(m_Shader, m_VertexArray);
             
             Renderer::EndScene();
             for(auto &layer : m_LayerStack)

@@ -16,6 +16,7 @@
 #include "Shader.h"
 #include "Buffer.h"
 #include "VertexArray.h"
+#include "OrthographicCamera.h"
 
 namespace Rasel {
     class Application {
@@ -45,6 +46,8 @@ namespace Rasel {
         
         std::shared_ptr<Shader> m_BlueShader;
         std::shared_ptr<VertexArray> m_SquareVA;
+        
+        OrthographicCamera m_Camera;
     private:
         static std::shared_ptr<Application> s_Instance;
     };    
