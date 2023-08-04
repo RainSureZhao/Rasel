@@ -7,9 +7,15 @@
 #include "Log.h"
 #include "glm/gtc/type_ptr.hpp"
 namespace Rasel {
-    Rasel::Shader::Shader(const std::string &vertexSrc, const std::string &fragmentSrc) {
+    Rasel::Shader::Shader(const std::string &vertexShaderFile, const std::string &fragmentShaderFile) {
         auto VertexShader = glCreateShader(GL_VERTEX_SHADER);
         auto FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        
+        std::ifstream vertexFile(vertexShaderFile);
+        std::ifstream shaderFile(fragmentShaderFile);
+        
+        std::string vertexSrc = std::string((std::istreambuf_iterator<char>(vertexFile)), std::istreambuf_iterator<char>());
+        std::string fragmentSrc = std::string((std::istreambuf_iterator<char>(shaderFile)), std::istreambuf_iterator<char>());
         
         const char* VertexSource = vertexSrc.c_str();
         const char* FragmentSource = fragmentSrc.c_str();

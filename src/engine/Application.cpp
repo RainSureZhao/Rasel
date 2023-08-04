@@ -4,7 +4,6 @@
         
 #include "Application.h"
 #include "Log.h"
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "Renderer.h"
 #include "RendererCommand.h"
@@ -47,13 +46,7 @@ namespace Rasel{
          indexBuffer.reset(IndexBuffer::Create(indices.data(), indices.size()));
          m_VertexArray->SetIndexBuffer(indexBuffer);
          
-         std::ifstream vertexShaderFile(R"(shader\VertexShader.glsl)");
-         std::ifstream fragmentShaderFile(R"(shader\FragmentShader.glsl)");
-         
-         std::string VertexShaderSource((std::istreambuf_iterator<char>(vertexShaderFile)), std::istreambuf_iterator<char>());
-         std::string FragmentShaderSource((std::istreambuf_iterator<char>(fragmentShaderFile)), std::istreambuf_iterator<char>());
-         
-         m_Shader = std::make_unique<Shader>(VertexShaderSource, FragmentShaderSource);
+         m_Shader = std::make_unique<Shader>(R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)");
          
          m_SquareVA.reset(VertexArray::Create());
          
@@ -76,13 +69,7 @@ namespace Rasel{
          squareIB.reset(IndexBuffer::Create(squareIndices.data(), sizeof(float) * squareIndices.size()));
          m_SquareVA->SetIndexBuffer(squareIB);
          
-         std::ifstream BlueVertexShaderFile(R"(shader/BlueVertexShader.glsl)");
-         std::ifstream BlueFragmentShaderFile(R"(shader/BlueFragmentShader.glsl)");
-         
-         std::string BlueVertexShaderSource((std::istreambuf_iterator<char>(BlueVertexShaderFile)), std::istreambuf_iterator<char>());
-         std::string BlueFragmentShaderSource((std::istreambuf_iterator<char>(BlueFragmentShaderFile)), std::istreambuf_iterator<char>());
-    
-        m_BlueShader.reset(new Shader(BlueVertexShaderSource, BlueFragmentShaderSource));
+         m_BlueShader.reset(new Shader(R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)"));
     }
     
     void Application::Run() {
