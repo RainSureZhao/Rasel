@@ -6,6 +6,8 @@
 #include "Log.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "Renderer.h"
+#include "RendererCommand.h"
 
 namespace Rasel{
     std::shared_ptr<Application> Application::s_Instance = nullptr;
@@ -85,17 +87,18 @@ namespace Rasel{
     
     void Application::Run() {
         while(m_Running) {
-            glClearColor(0.2, 0, 1, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
+            RendererCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+            RendererCommand::Clear();
+            
+            Renderer::BeginScene();
             
             m_BlueShader->Bind();
-            m_SquareVA->Bind();
-            glDrawElements(GL_TRIANGLES, static_cast<int>(m_SquareVA->GetIndexBuffer()->GetCount()), GL_UNSIGNED_INT, nullptr);
-            
+            Renderer::Submit(m_SquareVA);
             
             m_Shader->Bind();
-            m_VertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, static_cast<int>(m_VertexArray->GetIndexBuffer()->GetCount()), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_VertexArray);
+            
+            Renderer::EndScene();
             for(auto &layer : m_LayerStack)
                 layer->OnUpdate();
              m_ImGuiLayer->Begin();
