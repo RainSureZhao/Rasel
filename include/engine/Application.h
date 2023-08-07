@@ -13,10 +13,7 @@
 #include "LayerStack.h"
 #include "Input.h"
 #include "ImGuiLayer.h"
-#include "Shader.h"
-#include "Buffer.h"
-#include "VertexArray.h"
-#include "OrthographicCamera.h"
+#include "Timestep.h"
 
 namespace Rasel {
     class Application {
@@ -40,14 +37,8 @@ namespace Rasel {
         std::unique_ptr<ImGuiLayer> m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
+        float m_LastFrameTime = 0.0f;
         
-        std::shared_ptr<VertexArray> m_VertexArray;
-        std::shared_ptr<Shader> m_Shader;
-        
-        std::shared_ptr<Shader> m_BlueShader;
-        std::shared_ptr<VertexArray> m_SquareVA;
-        
-        OrthographicCamera m_Camera;
     private:
         static std::shared_ptr<Application> s_Instance;
     };    

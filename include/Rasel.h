@@ -59,4 +59,18 @@
 #include "KeyCodes.h"
 //----------------------------------------
 
+//------------Input-----------------------
+#include "Input.h"
+#include "WindowsInput.h"
+//----------------------------------------
+
+//------------Renderer--------------------
+#include "Renderer.h"
+#include "RendererCommand.h"
+#include "Buffer.h"
+#include "Shader.h"
+#include "VertexArray.h"
+#include "OrthographicCamera.h"
+#include "Timestep.h"
+//----------------------------------------
 #endif //RASEL_RASEL_H
