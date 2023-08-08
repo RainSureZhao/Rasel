@@ -2,7 +2,7 @@
 // Created by 赵润朔 on 2023/7/16.
 //
 #include "Rasel.h"
-#include "imgui.h"
+#include "glm/ext/matrix_transform.hpp"
 
 class ExampleLayer : public Rasel::Layer {
 public:
@@ -36,10 +36,10 @@ public:
         m_SquareVA.reset(Rasel::VertexArray::Create());
 
         std::vector<float> squareVertices ({
-           -0.75f, -0.75f, 0.0f,
-           0.75f, -0.75f, 0.0f,
-           0.75f, 0.75f, 0.0f,
-           -0.75f, 0.75f, 0.0f
+           -0.5f, -0.5f, 0.0f,
+           0.5f, -0.5f, 0.0f,
+           0.5f, 0.5f, 0.0f,
+           -0.5f, 0.5f, 0.0f
        });
 
         std::shared_ptr<Rasel::VertexBuffer> squareVB;
@@ -83,7 +83,14 @@ public:
         
         Rasel::Renderer::BeginScene(m_Camera);
         
-        Rasel::Renderer::Submit(m_BlueShader, m_SquareVA);
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+        for(int x = 0; x < 20; x ++) {
+            for(int y = 0; y < 20; y ++) {
+                glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+                Rasel::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
+            }
+        }
         Rasel::Renderer::Submit(m_Shader, m_VertexArray);
         
         Rasel::Renderer::EndScene();
