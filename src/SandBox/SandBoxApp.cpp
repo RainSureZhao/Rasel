@@ -3,7 +3,9 @@
 //
 #include "Rasel.h"
 #include "glm/ext/matrix_transform.hpp"
-
+#include "imgui.h"
+#include "glm/gtc/type_ptr.hpp"
+#include "OpenGLShader.h"
 class ExampleLayer : public Rasel::Layer {
 public:
     ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f) {
@@ -11,9 +13,9 @@ public:
         m_VertexArray.reset(Rasel::VertexArray::Create());
 
         std::vector<float> vertices {
-                -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-                0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-                0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
+            -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+            0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+            0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
         };
         std::shared_ptr<Rasel::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(Rasel::VertexBuffer::Create(vertices.data(), sizeof(float) * vertices.size()));
@@ -31,7 +33,7 @@ public:
         indexBuffer.reset(Rasel::IndexBuffer::Create(indices.data(), indices.size()));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        m_Shader = std::make_unique<Rasel::Shader>(R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)");
+        m_Shader.reset(Rasel::Shader::Create(R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)"));
 
         m_SquareVA.reset(Rasel::VertexArray::Create());
 
@@ -54,7 +56,7 @@ public:
         squareIB.reset(Rasel::IndexBuffer::Create(squareIndices.data(), sizeof(float) * squareIndices.size()));
         m_SquareVA->SetIndexBuffer(squareIB);
 
-        m_BlueShader.reset(new Rasel::Shader(R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)"));
+        m_BlueShader.reset(Rasel::Shader::Create(R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)"));
     }
     void OnUpdate(Rasel::Timestep timestep) override {
         if(Rasel::Input::IsKeyPressed(RZ_KEY_LEFT)) {
@@ -82,6 +84,8 @@ public:
         m_Camera.SetRotation(m_CameraRotation);
         
         Rasel::Renderer::BeginScene(m_Camera);
+        std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_BlueShader)->Bind();
+        std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_BlueShader)->UploadUniformFloat3("u_Color", m_SquareColor);
         
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
         for(int x = 0; x < 20; x ++) {
@@ -101,7 +105,9 @@ public:
     }
 
     void OnImGuiRender() override {
-        
+        ImGui::Begin("Settings");
+        ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+        ImGui::End();
     }
 private:
     std::shared_ptr<Rasel::VertexArray> m_VertexArray;
@@ -116,6 +122,8 @@ private:
     
     float m_CameraRotation = 0.0f;
     float m_CameraRotationSpeed = 180.0f;
+    
+    glm::vec3 m_SquareColor = {0.2f, 0.3f, 0.8f};
 };
 
 class SandBox : public Rasel::Application{
