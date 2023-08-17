@@ -7,25 +7,25 @@
 
 #include "Layer.h"
 #include "stdafx.h"
-
+#include "Core.h"
 namespace Rasel {
-    using LayerVectorIter = std::vector<std::unique_ptr<Layer>>::iterator;
+    using LayerVectorIter = std::vector<Scope<Layer>>::iterator;
     class LayerStack {
     public:
         LayerStack();
         ~LayerStack() = default;
         
-        void PushLayer(std::unique_ptr<Layer> layer);
-        void PushOverlay(std::unique_ptr<Layer> overlay);
-        void PopLayer(std::unique_ptr<Layer> layer);
-        void PopOverlay(std::unique_ptr<Layer> overlay);
+        void PushLayer(Scope<Layer> layer);
+        void PushOverlay(Scope<Layer> overlay);
+        void PopLayer(Scope<Layer> layer);
+        void PopOverlay(Scope<Layer> overlay);
         
         LayerVectorIter begin() {return m_Layers.begin();}
         LayerVectorIter end() {return m_Layers.end();}
         
-        [[nodiscard]] int size() const {return m_Layers.size();}
+        [[nodiscard]] int size() const {return static_cast<int>(m_Layers.size());}
     private:
-        std::vector<std::unique_ptr<Layer>> m_Layers;
+        std::vector<Scope<Layer>> m_Layers;
         unsigned int m_LayerInsertIndex = 0;
     };
 

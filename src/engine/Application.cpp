@@ -5,17 +5,17 @@
 #include "Application.h"
 #include "Log.h"
 #include "GLFW/glfw3.h"
-
+#include "Core.h"
 namespace Rasel{
-    std::shared_ptr<Application> Application::s_Instance = nullptr;
+    Ref<Application> Application::s_Instance = nullptr;
     
     
     Application::Application()
     {
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
-        s_Instance = std::shared_ptr<Application>(this);
-        m_Window = std::unique_ptr<Window>(Window::Create());
+        s_Instance = Rasel::Ref<Application>(this);
+        m_Window = Rasel::Scope<Window>(Window::Create());
         m_Window->SetEventCallback([this](auto && PH1) { Application::OnEvent(std::forward<decltype(PH1)>(PH1)); });
         
          m_ImGuiLayer = std::make_unique<ImGuiLayer>();
@@ -54,11 +54,11 @@ namespace Rasel{
         return true;
     }
 
-    void Application::PushLayer(std::unique_ptr<Layer> layer) {
+    void Application::PushLayer(Scope<Layer> layer) {
         m_LayerStack.PushLayer(std::move(layer));
     }
 
-    void Application::PushOverlay(std::unique_ptr<Layer> overlay) {
+    void Application::PushOverlay(Scope<Layer> overlay) {
         m_LayerStack.PushOverlay(std::move(overlay));
     }
 }

@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "OpenGLShader.h"
+#include "Core.h"
 class ExampleLayer : public Rasel::Layer {
 public:
     ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f) {
@@ -17,7 +18,7 @@ public:
             0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
             0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
         };
-        std::shared_ptr<Rasel::VertexBuffer> vertexBuffer;
+        Rasel::Ref<Rasel::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(Rasel::VertexBuffer::Create(vertices.data(), sizeof(float) * vertices.size()));
         Rasel::BufferLayout layout ({
              {"a_Position", Rasel::ShaderDataType::Float3},
@@ -29,7 +30,7 @@ public:
         std::vector<unsigned int> indices {
             0, 1, 2
         };
-        std::shared_ptr<Rasel::IndexBuffer> indexBuffer;
+        Rasel::Ref<Rasel::IndexBuffer> indexBuffer;
         indexBuffer.reset(Rasel::IndexBuffer::Create(indices.data(), indices.size()));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -44,7 +45,7 @@ public:
            -0.5f, 0.5f, 0.0f
        });
 
-        std::shared_ptr<Rasel::VertexBuffer> squareVB;
+        Rasel::Ref<Rasel::VertexBuffer> squareVB;
         squareVB.reset(Rasel::VertexBuffer::Create(squareVertices.data(), sizeof(float) * squareVertices.size()));
         squareVB->SetLayout({
             {"a_Position", Rasel::ShaderDataType::Float3}
@@ -52,7 +53,7 @@ public:
         m_SquareVA->AddVertexBuffer(squareVB);
 
         std::vector<uint32_t> squareIndices = { 0, 1, 2, 2, 3, 0 };
-        std::shared_ptr<Rasel::IndexBuffer> squareIB;
+        Rasel::Ref<Rasel::IndexBuffer> squareIB;
         squareIB.reset(Rasel::IndexBuffer::Create(squareIndices.data(), sizeof(float) * squareIndices.size()));
         m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -110,11 +111,11 @@ public:
         ImGui::End();
     }
 private:
-    std::shared_ptr<Rasel::VertexArray> m_VertexArray;
-    std::shared_ptr<Rasel::Shader> m_Shader;
+    Rasel::Ref<Rasel::VertexArray> m_VertexArray;
+    Rasel::Ref<Rasel::Shader> m_Shader;
 
-    std::shared_ptr<Rasel::Shader> m_BlueShader;
-    std::shared_ptr<Rasel::VertexArray> m_SquareVA;
+    Rasel::Ref<Rasel::Shader> m_BlueShader;
+    Rasel::Ref<Rasel::VertexArray> m_SquareVA;
 
     Rasel::OrthographicCamera m_Camera;
     glm::vec3 m_CameraPosition;
@@ -134,6 +135,6 @@ public:
     ~SandBox() = default;
 };
 
-std::unique_ptr<Rasel::Application> Rasel::CreateApplication() {
+Rasel::Scope<Rasel::Application> Rasel::CreateApplication() {
     return std::make_unique<SandBox>();
 }

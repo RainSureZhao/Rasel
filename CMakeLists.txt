@@ -12,7 +12,7 @@ find_package(OpenGL REQUIRED)
 add_subdirectory(ThirdParty)
 
 file(GLOB ENGINE "${PROJECT_SOURCE_DIR}/src/engine/*.cpp" "${PROJECT_SOURCE_DIR}/include/engine/*.h")
-file(GLOB RASEL "${PROJECT_SOURCE_DIR}/include/Rasel.h")
+file(GLOB RASEL "${PROJECT_SOURCE_DIR}/include/Rasel.h" "${PROJECT_SOURCE_DIR}/include/Core.h")
 file(GLOB SANDBOX "${PROJECT_SOURCE_DIR}/src/SandBox/*.cpp")
 file(GLOB EVENT "${PROJECT_SOURCE_DIR}/include/engine/Events/*.h")
 file(GLOB PLATFORM_WINDOW "${PROJECT_SOURCE_DIR}/include/engine/Platforms/Windows/*.h" "${PROJECT_SOURCE_DIR}/src/engine/Platforms/Windows/*.cpp")

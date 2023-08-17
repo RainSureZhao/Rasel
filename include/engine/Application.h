@@ -14,7 +14,7 @@
 #include "Input.h"
 #include "ImGuiLayer.h"
 #include "Timestep.h"
-
+#include "Core.h"
 namespace Rasel {
     class Application {
     public:
@@ -23,8 +23,8 @@ namespace Rasel {
         void OnEvent(Event& e);
         void Run();
         
-        void PushLayer(std::unique_ptr<Layer> layer);
-        void PushOverlay(std::unique_ptr<Layer> overlay);
+        void PushLayer(Scope<Layer> layer);
+        void PushOverlay(Scope<Layer> overlay);
         
         inline Window& GetWindow() { return *m_Window; }
         
@@ -32,19 +32,19 @@ namespace Rasel {
         
     private:
         bool OnWindowClosed(WindowCloseEvent& e);
-        
-        std::unique_ptr<Window> m_Window;
-        std::unique_ptr<ImGuiLayer> m_ImGuiLayer;
+
+        Scope<Window> m_Window;
+        Scope<ImGuiLayer> m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
         float m_LastFrameTime = 0.0f;
         
     private:
-        static std::shared_ptr<Application> s_Instance;
+        static Ref<Application> s_Instance;
     };    
     
     // To be defined in CLIENT
-    std::unique_ptr<Application> CreateApplication();
+    Scope<Application> CreateApplication();
 }
 
 
