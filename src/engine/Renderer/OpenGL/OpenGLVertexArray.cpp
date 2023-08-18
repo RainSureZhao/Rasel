@@ -51,17 +51,16 @@ namespace Rasel {
         glBindVertexArray(m_RendererID);
         vertexBuffer->Bind();
         
-        uint32_t index = 0;
         const auto& layout = vertexBuffer->GetLayout();
         for(const auto& element : layout) {
-            glEnableVertexAttribArray(index);
-            glVertexAttribPointer(index,
+            glEnableVertexAttribArray(m_VertexBufferIndex);
+            glVertexAttribPointer(m_VertexBufferIndex,
               static_cast<GLint>(element.GetComponentCount()),
               ShaderDataTypeToOpenGLBaseType(element.Type),
               element.Normalized ? GL_TRUE : GL_FALSE,
               static_cast<GLint>(layout.GetStride()),
               reinterpret_cast<const void*>(element.Offset));
-            index ++;
+            m_VertexBufferIndex ++;
         }
         m_VertexBuffers.push_back(vertexBuffer);
     }
