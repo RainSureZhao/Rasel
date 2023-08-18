@@ -72,5 +72,6 @@
 #include "VertexArray.h"
 #include "OrthographicCamera.h"
 #include "Timestep.h"
+#include "Texture.h"
 //----------------------------------------
 #endif //RASEL_RASEL_H

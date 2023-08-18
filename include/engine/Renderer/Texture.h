@@ -1,0 +1,30 @@
+//
+// Created by 赵润朔 on 2023/8/18.
+//
+
+#ifndef RASEL_TEXTURE_H
+#define RASEL_TEXTURE_H
+
+#include <cstdint>
+#include <string>
+#include "Core.h"
+namespace Rasel {
+
+    class Texture {
+    public:
+        virtual ~Texture() = default;
+        
+        [[nodiscard]] virtual uint32_t GetWidth() const = 0;
+        [[nodiscard]] virtual uint32_t GetHeight() const = 0;
+        
+        virtual void Bind(uint32_t slot = 0) const = 0;
+    };
+    
+    class Texture2D : public Texture {
+    public: 
+        static Ref<Texture2D> Create(const std::string& path);
+    };
+
+} // Rasel
+
+#endif //RASEL_TEXTURE_H

@@ -39,16 +39,17 @@ public:
         m_SquareVA.reset(Rasel::VertexArray::Create());
 
         std::vector<float> squareVertices ({
-           -0.5f, -0.5f, 0.0f,
-           0.5f, -0.5f, 0.0f,
-           0.5f, 0.5f, 0.0f,
-           -0.5f, 0.5f, 0.0f
+           -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+           0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+           0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+           -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
        });
 
         Rasel::Ref<Rasel::VertexBuffer> squareVB;
         squareVB.reset(Rasel::VertexBuffer::Create(squareVertices.data(), sizeof(float) * squareVertices.size()));
         squareVB->SetLayout({
-            {"a_Position", Rasel::ShaderDataType::Float3}
+            {"a_Position", Rasel::ShaderDataType::Float3},
+            {"a_TexCoord", Rasel::ShaderDataType::Float2}
         });
         m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -58,6 +59,12 @@ public:
         m_SquareVA->SetIndexBuffer(squareIB);
 
         m_BlueShader.reset(Rasel::Shader::Create(R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)"));
+
+        m_TextureShader.reset(Rasel::Shader::Create(R"(shader/TextureVertexShader.glsl)", R"(shader/TextureFragmentShader.glsl)"));
+        m_Texture = Rasel::Texture2D::Create(R"(assets/textures/Checkerboard.png)");
+
+        std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_TextureShader)->Bind();
+        std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
     }
     void OnUpdate(Rasel::Timestep timestep) override {
         if(Rasel::Input::IsKeyPressed(RZ_KEY_LEFT)) {
@@ -96,8 +103,11 @@ public:
                 Rasel::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
             }
         }
-        Rasel::Renderer::Submit(m_Shader, m_VertexArray);
         
+      
+        // Rasel::Renderer::Submit(m_Shader, m_VertexArray);
+        m_Texture->Bind();
+        Rasel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         Rasel::Renderer::EndScene();
         
     }
@@ -114,9 +124,11 @@ private:
     Rasel::Ref<Rasel::VertexArray> m_VertexArray;
     Rasel::Ref<Rasel::Shader> m_Shader;
 
-    Rasel::Ref<Rasel::Shader> m_BlueShader;
+    Rasel::Ref<Rasel::Shader> m_BlueShader, m_TextureShader;
     Rasel::Ref<Rasel::VertexArray> m_SquareVA;
 
+    Rasel::Ref<Rasel::Texture2D> m_Texture;
+    
     Rasel::OrthographicCamera m_Camera;
     glm::vec3 m_CameraPosition;
     float m_CameraMoveSpeed = 5.0f;
