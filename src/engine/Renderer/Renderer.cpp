@@ -24,6 +24,10 @@ namespace Rasel {
         vertexArray->Bind();
         RendererCommand::DrawIndexed(vertexArray);
     }
-    
-    
+
+    void Renderer::Init() {
+        RendererCommand::Init();
+    }
+
+
 } // Rasel

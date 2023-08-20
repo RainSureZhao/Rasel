@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "GLFW/glfw3.h"
 #include "Core.h"
+#include "Renderer.h"
 namespace Rasel{
     Ref<Application> Application::s_Instance = nullptr;
     
@@ -18,8 +19,10 @@ namespace Rasel{
         m_Window = Rasel::Scope<Window>(Window::Create());
         m_Window->SetEventCallback([this](auto && PH1) { Application::OnEvent(std::forward<decltype(PH1)>(PH1)); });
         
-         m_ImGuiLayer = std::make_unique<ImGuiLayer>();
-         PushOverlay(std::move(m_ImGuiLayer));
+        Renderer::Init();
+        
+        m_ImGuiLayer = std::make_unique<ImGuiLayer>();
+        PushOverlay(std::move(m_ImGuiLayer));
     }
     
     void Application::Run() {

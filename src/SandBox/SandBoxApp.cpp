@@ -62,7 +62,8 @@ public:
 
         m_TextureShader.reset(Rasel::Shader::Create(R"(shader/TextureVertexShader.glsl)", R"(shader/TextureFragmentShader.glsl)"));
         m_Texture = Rasel::Texture2D::Create(R"(assets/textures/Checkerboard.png)");
-
+        m_LogoTexture = Rasel::Texture2D::Create(R"(assets/textures/ChernoLogo.png)");
+        
         std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_TextureShader)->Bind();
         std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
     }
@@ -108,6 +109,9 @@ public:
         // Rasel::Renderer::Submit(m_Shader, m_VertexArray);
         m_Texture->Bind();
         Rasel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        
+        m_LogoTexture->Bind();
+        Rasel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         Rasel::Renderer::EndScene();
         
     }
@@ -127,7 +131,7 @@ private:
     Rasel::Ref<Rasel::Shader> m_BlueShader, m_TextureShader;
     Rasel::Ref<Rasel::VertexArray> m_SquareVA;
 
-    Rasel::Ref<Rasel::Texture2D> m_Texture;
+    Rasel::Ref<Rasel::Texture2D> m_Texture, m_LogoTexture;
     
     Rasel::OrthographicCamera m_Camera;
     glm::vec3 m_CameraPosition;
