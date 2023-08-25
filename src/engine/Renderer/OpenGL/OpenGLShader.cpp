@@ -3,11 +3,18 @@
 //
 
 #include "OpenGLShader.h"
-#include "glad/glad.h"
 #include "Log.h"
 #include "glm/gtc/type_ptr.hpp"
-
+#include "glad/glad.h"
 namespace Rasel {
+    static GLenum ShaderTypeFromString(const std::string& type) {
+        if(type == "vertex") return GL_VERTEX_SHADER;
+        if(type == "fragment" or type == "pixel") return GL_FRAGMENT_SHADER;
+
+        RZ_CORE_ASSERT(false, "Unknown shader type");
+        return 0;
+    }
+    
     OpenGLShader::OpenGLShader(const std::string &vertexShaderFile, const std::string &fragmentShaderFile) {
         auto VertexShader = glCreateShader(GL_VERTEX_SHADER);
         auto FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -15,8 +22,8 @@ namespace Rasel {
         std::ifstream vertexFile(vertexShaderFile);
         std::ifstream shaderFile(fragmentShaderFile);
 
-        std::string vertexSrc = std::string((std::istreambuf_iterator<char>(vertexFile)), std::istreambuf_iterator<char>());
-        std::string fragmentSrc = std::string((std::istreambuf_iterator<char>(shaderFile)), std::istreambuf_iterator<char>());
+        std::string vertexSrc = std::string(std::istreambuf_iterator<char>(vertexFile), std::istreambuf_iterator<char>());
+        std::string fragmentSrc = std::string(std::istreambuf_iterator<char>(shaderFile), std::istreambuf_iterator<char>());
 
         const char* VertexSource = vertexSrc.c_str();
         const char* FragmentSource = fragmentSrc.c_str();
@@ -134,5 +141,95 @@ namespace Rasel {
     void OpenGLShader::UploadUniformMat4(const std::string &name, const glm::mat4 &matrix) const {
         auto location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    std::string OpenGLShader::ReadFile(const std::string &filepath) {
+        std::ifstream FileSource(filepath);
+        if(!FileSource.is_open()) {
+            RZ_CORE_ERROR("Could not open file {0}", filepath);
+            return {};
+        }
+        std::string Source = std::string(std::istreambuf_iterator<char>(FileSource), std::istreambuf_iterator<char>());
+        return Source;
+    }
+
+    std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string &source) {
+        std::unordered_map<GLenum, std::string> shaderSources;
+        const std::string typeToken = "#type";
+        auto pos = source.find(typeToken);
+        while(pos != std::string::npos) {
+            auto eol = source.find_first_of("\r\n", pos);
+            RZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
+            auto begin = pos + typeToken.size() + 1;
+            auto type = source.substr(begin, eol - begin);
+            RZ_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
+            
+            auto nextLinePos = source.find_first_not_of("\r\n", eol);
+            pos = source.find(typeToken, nextLinePos);
+            shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+        }
+        return shaderSources;
+    }
+
+    void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shaderSources) {
+        auto program = glCreateProgram();
+        std::vector<GLenum> glShaderIDs;
+        for(auto &[type, source] : shaderSources) {
+            auto shader = glCreateShader(type);
+            auto SourceStr = source.c_str();
+            glShaderSource(shader, 1, &SourceStr, nullptr);
+            
+            glCompileShader(shader);
+            GLint isCompiled = 0;
+            glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+            if(isCompiled == GL_FALSE) {
+                GLint maxLength = 0;
+                glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+                std::string infoLog(maxLength, '\0');
+                glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
+
+                glDeleteShader(shader);
+                RZ_CORE_ERROR("{0}", infoLog);
+                RZ_CORE_ASSERT(false, "Vertex shader compilation failure!");
+                break;
+            }
+            glAttachShader(program, shader);
+            glShaderIDs.push_back(shader);
+        }
+        m_RendererID = program;
+        
+        glLinkProgram(m_RendererID);
+        GLint isLinked = 0;
+        glGetProgramiv(m_RendererID, GL_LINK_STATUS, (int*)&isLinked);
+        if(isLinked == GL_FALSE)
+        {
+            GLint maxLength = 0;
+            glGetProgramiv(m_RendererID, GL_INFO_LOG_LENGTH, &maxLength);
+
+            std::string infoLog(maxLength, '\0');
+            glGetProgramInfoLog(m_RendererID, maxLength, &maxLength, &infoLog[0]);
+
+            glDeleteProgram(m_RendererID);
+
+            for(auto id : glShaderIDs) {
+                glDeleteShader(id);
+            }
+
+            RZ_CORE_ERROR("{0}", infoLog);
+            RZ_CORE_ASSERT(false, "Shader link failure!");
+            return;
+        }
+        
+        for(auto id : glShaderIDs) {
+            glDetachShader(program, id);
+        }
+        
+    }
+
+    OpenGLShader::OpenGLShader(const std::string &filepath) {
+        auto source = ReadFile(filepath);
+        auto shaderSource = PreProcess(source);
+        Compile(shaderSource);
     }
 } // Rasel

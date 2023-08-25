@@ -60,7 +60,8 @@ public:
 
         m_BlueShader.reset(Rasel::Shader::Create(R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)"));
 
-        m_TextureShader.reset(Rasel::Shader::Create(R"(shader/TextureVertexShader.glsl)", R"(shader/TextureFragmentShader.glsl)"));
+        // m_TextureShader.reset(Rasel::Shader::Create(R"(shader/TextureVertexShader.glsl)", R"(shader/TextureFragmentShader.glsl)"));
+        m_TextureShader.reset(Rasel::Shader::Create(R"(shader/Texture.glsl)"));
         m_Texture = Rasel::Texture2D::Create(R"(assets/textures/Checkerboard.png)");
         m_LogoTexture = Rasel::Texture2D::Create(R"(assets/textures/ChernoLogo.png)");
         

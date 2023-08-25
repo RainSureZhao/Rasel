@@ -19,4 +19,16 @@ namespace Rasel {
         RZ_CORE_ASSERT(false, "Unknown RendererAPI!");
         return nullptr;
     }
+
+    Shader *Shader::Create(const std::string &filepath) {
+        switch(RendererAPI::GetAPI()) {
+            case RendererAPI::API::None: 
+                RZ_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
+                return nullptr;
+            case RendererAPI::API::OpenGL:
+                return new OpenGLShader(filepath);
+        }
+        RZ_CORE_ASSERT(false, "Unknown RendererAPI!");
+        return nullptr;
+    }
 } // Rasel
