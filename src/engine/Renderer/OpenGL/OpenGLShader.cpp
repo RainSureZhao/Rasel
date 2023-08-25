@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glad/glad.h"
+#include <filesystem>
 namespace Rasel {
     static GLenum ShaderTypeFromString(const std::string& type) {
         if(type == "vertex") return GL_VERTEX_SHADER;
@@ -15,7 +16,7 @@ namespace Rasel {
         return 0;
     }
     
-    OpenGLShader::OpenGLShader(const std::string &vertexShaderFile, const std::string &fragmentShaderFile) {
+    OpenGLShader::OpenGLShader(const std::string& name, const std::string &vertexShaderFile, const std::string &fragmentShaderFile) : m_Name(name) {
         auto VertexShader = glCreateShader(GL_VERTEX_SHADER);
         auto FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -231,5 +232,8 @@ namespace Rasel {
         auto source = ReadFile(filepath);
         auto shaderSource = PreProcess(source);
         Compile(shaderSource);
+        
+        std::filesystem::path path = filepath;
+        m_Name = path.stem().string();
     }
 } // Rasel

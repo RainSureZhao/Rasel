@@ -34,7 +34,7 @@ public:
         indexBuffer.reset(Rasel::IndexBuffer::Create(indices.data(), indices.size()));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        m_Shader.reset(Rasel::Shader::Create(R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)"));
+        m_Shader = Rasel::Shader::Create("m_Shader", R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)");
 
         m_SquareVA.reset(Rasel::VertexArray::Create());
 
@@ -58,15 +58,16 @@ public:
         squareIB.reset(Rasel::IndexBuffer::Create(squareIndices.data(), sizeof(float) * squareIndices.size()));
         m_SquareVA->SetIndexBuffer(squareIB);
 
-        m_BlueShader.reset(Rasel::Shader::Create(R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)"));
+        m_BlueShader = Rasel::Shader::Create("BlueShader", R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)");
 
         // m_TextureShader.reset(Rasel::Shader::Create(R"(shader/TextureVertexShader.glsl)", R"(shader/TextureFragmentShader.glsl)"));
-        m_TextureShader.reset(Rasel::Shader::Create(R"(shader/Texture.glsl)"));
+        // m_TextureShader = Rasel::Shader::Create(R"(shader/Texture.glsl)");
+        auto textureShader = m_ShaderLibrary.Load(R"(shader/Texture.glsl)");
         m_Texture = Rasel::Texture2D::Create(R"(assets/textures/Checkerboard.png)");
         m_LogoTexture = Rasel::Texture2D::Create(R"(assets/textures/ChernoLogo.png)");
         
-        std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_TextureShader)->Bind();
-        std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+        std::dynamic_pointer_cast<Rasel::OpenGLShader>(textureShader)->Bind();
+        std::dynamic_pointer_cast<Rasel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
     }
     void OnUpdate(Rasel::Timestep timestep) override {
         if(Rasel::Input::IsKeyPressed(RZ_KEY_LEFT)) {
@@ -108,11 +109,12 @@ public:
         
       
         // Rasel::Renderer::Submit(m_Shader, m_VertexArray);
+        auto textureShader = m_ShaderLibrary.Get("Texture");
         m_Texture->Bind();
-        Rasel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        Rasel::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         
         m_LogoTexture->Bind();
-        Rasel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        Rasel::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         Rasel::Renderer::EndScene();
         
     }
@@ -126,10 +128,12 @@ public:
         ImGui::End();
     }
 private:
+    
+    Rasel::ShaderLibrary m_ShaderLibrary;
     Rasel::Ref<Rasel::VertexArray> m_VertexArray;
     Rasel::Ref<Rasel::Shader> m_Shader;
 
-    Rasel::Ref<Rasel::Shader> m_BlueShader, m_TextureShader;
+    Rasel::Ref<Rasel::Shader> m_BlueShader;
     Rasel::Ref<Rasel::VertexArray> m_SquareVA;
 
     Rasel::Ref<Rasel::Texture2D> m_Texture, m_LogoTexture;
