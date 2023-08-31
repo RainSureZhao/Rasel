@@ -6,7 +6,7 @@
 #define RASEL_INPUT_H
 
 #include "stdafx.h"
-
+#include "Core.h"
 namespace Rasel {
     class Input {
     public:
