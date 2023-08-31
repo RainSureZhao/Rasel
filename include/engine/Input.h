@@ -10,6 +10,8 @@
 namespace Rasel {
     class Input {
     public:
+        virtual ~Input() = default;
+        
         inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode);}
         
         inline static bool IsMouseButtonPressed(int button) {return s_Instance->IsMouseButtonPressedImpl(button);}
@@ -26,7 +28,7 @@ namespace Rasel {
         virtual float GetMouseYImpl() = 0;
         
     private:
-        static Input* s_Instance;
+        static Scope<Input> s_Instance;
     };
 }
 

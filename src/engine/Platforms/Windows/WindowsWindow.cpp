@@ -46,7 +46,7 @@ namespace Rasel {
         
         m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(), nullptr, nullptr);
         
-        m_Context = new OpenGLContext(m_Window);
+        m_Context = CreateScope<OpenGLContext>(m_Window);
         m_Context->Init();
         
         glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -128,7 +128,7 @@ namespace Rasel {
         glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keycode) {
            WindowData &data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
            
-           KeyTypedEvent event(keycode);
+           KeyTypedEvent event(static_cast<int>(keycode));
            data.EventCallback(event);
         });
     }

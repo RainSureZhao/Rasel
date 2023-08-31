@@ -7,7 +7,7 @@
 #include "Core.h"
 namespace Rasel {
 
-    Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
+    Scope<Renderer::SceneData> Renderer::s_SceneData = CreateScope<Renderer::SceneData>();
     
     void Renderer::BeginScene(OrthographicCamera& camera) {
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();    

@@ -6,6 +6,7 @@
 #define RASEL_RENDERERCOMMAND_H
 
 #include "RendererAPI.h"
+#include "Core.h"
 
 namespace Rasel {
 
@@ -31,7 +32,7 @@ namespace Rasel {
             s_RendererAPI->DrawIndexed(vertexArray);
         }
     private:
-        static RendererAPI* s_RendererAPI;
+        static Scope<RendererAPI> s_RendererAPI;
     };
 
 } // Rasel

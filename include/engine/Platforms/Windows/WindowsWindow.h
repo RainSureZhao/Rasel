@@ -8,6 +8,7 @@
 #include "Window.h"
 #include "GraphicsContext.h"
 #include "GLFW/glfw3.h"
+#include "Core.h"
 
 namespace Rasel {
 
@@ -29,12 +30,12 @@ namespace Rasel {
         inline virtual void* GetNativeWindow() const override { return m_Window; }
         
     private:
-        virtual void Init(const WindowProps& props);
-        virtual void Shutdown();
+        void Init(const WindowProps& props);
+        void Shutdown();
         
     private:
         GLFWwindow * m_Window;
-        GraphicsContext *m_Context;
+        Scope<GraphicsContext> m_Context;
         struct WindowData
         {
             std::string Title;
