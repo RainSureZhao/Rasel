@@ -9,7 +9,7 @@
 #include "Core.h"
 class ExampleLayer : public Rasel::Layer {
 public:
-    ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f) {
+    ExampleLayer() : Layer("Example"), m_CameraController(1280.0f / 720.0f, true){
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
         m_VertexArray.reset(Rasel::VertexArray::Create());
 
@@ -70,31 +70,13 @@ public:
         std::dynamic_pointer_cast<Rasel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
     }
     void OnUpdate(Rasel::Timestep timestep) override {
-        if(Rasel::Input::IsKeyPressed(RZ_KEY_LEFT)) {
-            m_CameraPosition.x -= m_CameraMoveSpeed * timestep;
-        } else if(Rasel::Input::IsKeyPressed(RZ_KEY_RIGHT)) {
-            m_CameraPosition.x += m_CameraMoveSpeed * timestep;
-        }
-        
-        if(Rasel::Input::IsKeyPressed(RZ_KEY_UP)) {
-            m_CameraPosition.y += m_CameraMoveSpeed * timestep;
-        } else if(Rasel::Input::IsKeyPressed(RZ_KEY_DOWN)) {
-            m_CameraPosition.y -= m_CameraMoveSpeed * timestep;
-        }
-        
-        if(Rasel::Input::IsKeyPressed(RZ_KEY_A)) {
-            m_CameraRotation += m_CameraRotationSpeed * timestep;
-        } else if(Rasel::Input::IsKeyPressed(RZ_KEY_D)) {
-            m_CameraRotation -= m_CameraRotationSpeed * timestep;
-        }
+        m_CameraController.OnUpdate(timestep);
         
         Rasel::RendererCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
         Rasel::RendererCommand::Clear();
         
-        m_Camera.SetPosition(m_CameraPosition);
-        m_Camera.SetRotation(m_CameraRotation);
+        Rasel::Renderer::BeginScene(m_CameraController.GetCamera());
         
-        Rasel::Renderer::BeginScene(m_Camera);
         std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_BlueShader)->Bind();
         std::dynamic_pointer_cast<Rasel::OpenGLShader>(m_BlueShader)->UploadUniformFloat3("u_Color", m_SquareColor);
         
@@ -118,8 +100,8 @@ public:
         Rasel::Renderer::EndScene();
         
     }
-    void OnEvent(Rasel::Event& event) override {
-        
+    void OnEvent(Rasel::Event& e) override {
+        m_CameraController.OnEvent(e);
     }
 
     void OnImGuiRender() override {
@@ -138,12 +120,7 @@ private:
 
     Rasel::Ref<Rasel::Texture2D> m_Texture, m_LogoTexture;
     
-    Rasel::OrthographicCamera m_Camera;
-    glm::vec3 m_CameraPosition;
-    float m_CameraMoveSpeed = 5.0f;
-    
-    float m_CameraRotation = 0.0f;
-    float m_CameraRotationSpeed = 180.0f;
+    Rasel::OrthographicCameraController m_CameraController;
     
     glm::vec3 m_SquareColor = {0.2f, 0.3f, 0.8f};
 };
