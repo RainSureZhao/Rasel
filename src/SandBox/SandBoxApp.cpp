@@ -7,11 +7,13 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "OpenGLShader.h"
 #include "Core.h"
+#include "SandBox2D.h"
+
 class ExampleLayer : public Rasel::Layer {
 public:
     ExampleLayer() : Layer("Example"), m_CameraController(1280.0f / 720.0f, true){
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
-        m_VertexArray.reset(Rasel::VertexArray::Create());
+        m_VertexArray = Rasel::VertexArray::Create();
 
         std::vector<float> vertices {
             -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -36,7 +38,7 @@ public:
 
         m_Shader = Rasel::Shader::Create("m_Shader", R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)");
 
-        m_SquareVA.reset(Rasel::VertexArray::Create());
+        m_SquareVA = Rasel::VertexArray::Create();
 
         std::vector<float> squareVertices ({
            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -128,7 +130,8 @@ private:
 class SandBox : public Rasel::Application{
 public:
     SandBox() { 
-        PushLayer(std::make_unique<ExampleLayer>());
+        // PushLayer(std::make_unique<ExampleLayer>());
+        PushLayer(std::make_unique<SandBox2D>());
     }
     ~SandBox() = default;
 };

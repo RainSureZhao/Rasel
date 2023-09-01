@@ -14,7 +14,10 @@ namespace Rasel {
 
     class OrthographicCameraController {
     public:
+        OrthographicCameraController() = default;
         OrthographicCameraController(float aspectRatio, bool rotation = false);
+
+        ~OrthographicCameraController() = default;
         
         void OnUpdate(Timestep ts);
         void OnEvent(Event& e);

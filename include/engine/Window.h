@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "stdafx.h"
 #include "Event.h"
 
 namespace Rasel {

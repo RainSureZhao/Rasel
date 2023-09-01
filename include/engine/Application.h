@@ -51,6 +51,4 @@ namespace Rasel {
 }
 
 
-
-
 #endif //RASEL_APPLICATION_H
