@@ -14,7 +14,7 @@ namespace Rasel {
                 RZ_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
                 return nullptr;
             case RendererAPI::API::OpenGL:
-                return std::make_shared<OpenGLShader>(name, vertexShaderFile, fragmentShaderFile);
+                return CreateRef<OpenGLShader>(name, vertexShaderFile, fragmentShaderFile);
         }
         RZ_CORE_ASSERT(false, "Unknown RendererAPI!");
         return nullptr;

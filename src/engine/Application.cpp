@@ -40,7 +40,6 @@ namespace Rasel{
              m_ImGuiLayer->End();
             m_Window->OnUpdate();
         }
-        exit(0);
     }
 
     void Application::OnEvent(Event &e) {

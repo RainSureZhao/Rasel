@@ -12,7 +12,8 @@ SandBox2D::SandBox2D() : Layer("SandBox2D"), m_CameraController(1280.0f / 720.0f
 }
 
 void SandBox2D::OnAttach() {
-    Rasel::Renderer2D::Init();
+    std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
+    m_CheckerboardTexture = Rasel::Texture2D::Create(R"(assets/textures/Checkerboard.png)");
 }
 
 void SandBox2D::OnDetach() {
@@ -28,7 +29,9 @@ void SandBox2D::OnUpdate(Rasel::Timestep ts) {
     Rasel::RendererCommand::Clear();
     
     Rasel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Rasel::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.0f, 1.0f}, {0.8f, 0.2f, 0.3f, 1.0f});
+    Rasel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+    Rasel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+    Rasel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
     Rasel::Renderer2D::EndScene();
 }
 

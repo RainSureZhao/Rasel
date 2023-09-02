@@ -16,6 +16,7 @@ int main(int argc, char** argv)
     RZ_CORE_WARN("Initialized Log!");
     auto App = Rasel::CreateApplication();
     App->Run();
+    return 0;
 }
 
 #endif //RASEL_ENTRYPOINT_H
