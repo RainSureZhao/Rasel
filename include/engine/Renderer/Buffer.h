@@ -7,6 +7,7 @@
 
 #include "stdafx.h"
 #include "Log.h"
+#include "Core.h"
 
 namespace Rasel {
     
@@ -113,7 +114,7 @@ namespace Rasel {
         virtual const BufferLayout& GetLayout() const = 0;
         virtual void SetLayout(const BufferLayout& layout) = 0;
         
-        static VertexBuffer* Create(float* vertices, uint32_t size);
+        static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
     };
     
     class IndexBuffer {
@@ -125,7 +126,7 @@ namespace Rasel {
         
         [[nodiscard]] virtual uint32_t GetCount() const = 0;
         
-        static IndexBuffer* Create(uint32_t* indices, uint32_t size);
+        static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t size);
     };
 }
 #endif //RASEL_BUFFER_H

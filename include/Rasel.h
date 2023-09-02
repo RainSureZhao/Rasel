@@ -11,8 +11,6 @@
 #include "Application.h"
 //----------------------------------------
 
-#include "EntryPoint.h"
-
 //-------------Log------------------------
 #include "Log.h"
 //----------------------------------------
@@ -64,6 +62,7 @@
 
 //------------Renderer--------------------
 #include "Renderer.h"
+#include "Renderer2D.h"
 #include "RendererCommand.h"
 #include "Buffer.h"
 #include "Shader.h"

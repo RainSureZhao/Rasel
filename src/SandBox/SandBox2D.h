@@ -5,10 +5,7 @@
 #ifndef RASEL_SANDBOX2D_H
 #define RASEL_SANDBOX2D_H
 
-#include "Layer.h"
-#include "OrthographicCameraController.h"
-#include "VertexArray.h"
-#include "Shader.h"
+#include "Rasel.h"
 
 class SandBox2D : public Rasel::Layer{
 public:

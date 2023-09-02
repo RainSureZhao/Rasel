@@ -2,6 +2,7 @@
 // Created by 赵润朔 on 2023/7/16.
 //
 #include "Rasel.h"
+#include "EntryPoint.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "imgui.h"
 #include "glm/gtc/type_ptr.hpp"
@@ -20,8 +21,7 @@ public:
             0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
             0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
         };
-        Rasel::Ref<Rasel::VertexBuffer> vertexBuffer;
-        vertexBuffer.reset(Rasel::VertexBuffer::Create(vertices.data(), sizeof(float) * vertices.size()));
+        Rasel::Ref<Rasel::VertexBuffer> vertexBuffer = Rasel::VertexBuffer::Create(vertices.data(), sizeof(float) * vertices.size());
         Rasel::BufferLayout layout ({
              {"a_Position", Rasel::ShaderDataType::Float3},
              {"a_Color", Rasel::ShaderDataType::Float4}
@@ -32,8 +32,7 @@ public:
         std::vector<unsigned int> indices {
             0, 1, 2
         };
-        Rasel::Ref<Rasel::IndexBuffer> indexBuffer;
-        indexBuffer.reset(Rasel::IndexBuffer::Create(indices.data(), indices.size()));
+        Rasel::Ref<Rasel::IndexBuffer> indexBuffer = Rasel::IndexBuffer::Create(indices.data(), indices.size());
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
         m_Shader = Rasel::Shader::Create("m_Shader", R"(shader\VertexShader.glsl)", R"(shader\FragmentShader.glsl)");
@@ -47,8 +46,7 @@ public:
            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
        });
 
-        Rasel::Ref<Rasel::VertexBuffer> squareVB;
-        squareVB.reset(Rasel::VertexBuffer::Create(squareVertices.data(), sizeof(float) * squareVertices.size()));
+        Rasel::Ref<Rasel::VertexBuffer> squareVB = Rasel::VertexBuffer::Create(squareVertices.data(), sizeof(float) * squareVertices.size());
         squareVB->SetLayout({
             {"a_Position", Rasel::ShaderDataType::Float3},
             {"a_TexCoord", Rasel::ShaderDataType::Float2}
@@ -56,8 +54,7 @@ public:
         m_SquareVA->AddVertexBuffer(squareVB);
 
         std::vector<uint32_t> squareIndices = { 0, 1, 2, 2, 3, 0 };
-        Rasel::Ref<Rasel::IndexBuffer> squareIB;
-        squareIB.reset(Rasel::IndexBuffer::Create(squareIndices.data(), sizeof(float) * squareIndices.size()));
+        Rasel::Ref<Rasel::IndexBuffer> squareIB = Rasel::IndexBuffer::Create(squareIndices.data(), sizeof(float) * squareIndices.size());
         m_SquareVA->SetIndexBuffer(squareIB);
 
         m_BlueShader = Rasel::Shader::Create("BlueShader", R"(shader/BlueVertexShader.glsl)", R"(shader/BlueFragmentShader.glsl)");
