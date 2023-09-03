@@ -8,8 +8,6 @@
 #include "Log.h"
 #include "stdafx.h"
 
-extern std::unique_ptr<Rasel::Application> Rasel::CreateApplication();
-
 int main(int argc, char** argv)
 {
     Rasel::Log::Init();

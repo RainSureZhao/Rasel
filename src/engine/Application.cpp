@@ -7,6 +7,7 @@
 #include "GLFW/glfw3.h"
 #include "Core.h"
 #include "Renderer.h"
+
 namespace Rasel{
     Ref<Application> Application::s_Instance = nullptr;
     
@@ -48,10 +49,12 @@ namespace Rasel{
         dispatcher.Dispatch<WindowCloseEvent>([this](auto &&PH1){ return OnWindowClosed(std::forward<decltype(PH1)>(PH1));});
         dispatcher.Dispatch<WindowResizeEvent>([this](auto &&PH1){ return OnWindowResize(std::forward<decltype(PH1)>(PH1));});
         
-        for(auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
-            (*--it)->OnEvent(e);
-            if(e.Handled)
-                break;
+        if(m_LayerStack.size()) {
+            for(auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
+                (*--it)->OnEvent(e);
+                if(e.Handled)
+                    break;
+            }
         }
         RZ_CORE_TRACE("{0}", e);
     }

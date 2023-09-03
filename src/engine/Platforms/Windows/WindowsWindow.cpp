@@ -11,8 +11,7 @@
 #include "Log.h"
 
 namespace Rasel {
-    static int s_GLFWWindowCount = 0;
-    
+    static uint8_t s_GLFWWindowCount = 0;
     
     static void GLFWErrorCallback(int error, const char* description) {
         RZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -44,8 +43,8 @@ namespace Rasel {
             glfwSetErrorCallback(GLFWErrorCallback);
         }
         
-        s_GLFWWindowCount ++;
         m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(), nullptr, nullptr);
+        s_GLFWWindowCount ++;
         
         m_Context = CreateScope<OpenGLContext>(m_Window);
         m_Context->Init();
