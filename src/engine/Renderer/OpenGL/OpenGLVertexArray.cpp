@@ -46,6 +46,7 @@ namespace Rasel {
     }
     
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
+        
         RZ_CORE_ASSERT(!vertexBuffer->GetLayout().GetElements().empty(), "Vertex Buffer has no layout!");
         
         glBindVertexArray(m_RendererID);

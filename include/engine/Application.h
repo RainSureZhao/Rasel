@@ -20,7 +20,7 @@ namespace Rasel {
     class Application {
     public:
         Application();
-        virtual ~Application() = default;
+        ~Application();
         void OnEvent(Event& e);
         void Run();
         

@@ -50,7 +50,6 @@ namespace Rasel {
         auto squareIB = IndexBuffer::Create(squareIndices.data(), squareVertices.size());
         s_Data->QuadVertexArray->SetIndexBuffer(squareIB);
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
-        // s_Data->FlatColorShader = Shader::Create(R"(shader/FlatColor.glsl)");
         
         s_Data->TextureShader = Shader::Create(R"(shader/Texture.glsl)");
         s_Data->TextureShader->Bind();
@@ -78,8 +77,6 @@ namespace Rasel {
     }
 
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, const glm::vec4 &color) {
-//        s_Data->FlatColorShader->Bind();
-//        s_Data->FlatColorShader->SetFloat4("u_Color", color);
         s_Data->TextureShader->SetFloat4("u_Color", color);
         s_Data->WhiteTexture->Bind();
         
@@ -96,15 +93,13 @@ namespace Rasel {
     }
 
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, const Ref<Texture2D> &texture) {
-        // s_Data->TextureShader->Bind();
         
         s_Data->TextureShader->SetFloat4("u_Color", {1.0f, 1.0f, 1.0f, 1.0f});
         texture->Bind();
         
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
         s_Data->TextureShader->SetMat4("u_Transform", transform);
-        
-        // texture->Bind();
+
         
         s_Data->QuadVertexArray->Bind();
         RendererCommand::DrawIndexed(s_Data->QuadVertexArray);

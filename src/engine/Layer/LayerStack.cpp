@@ -5,7 +5,6 @@
 #include "LayerStack.h"
 
 namespace Rasel {
-    LayerStack::LayerStack() = default;
     
     void LayerStack::PushLayer(Scope<Layer> layer) {
         layer->OnAttach();
@@ -30,5 +29,10 @@ namespace Rasel {
             overlay->OnDetach();
             m_Layers.erase(it);
         }
+    }
+
+    LayerStack::~LayerStack() {
+        for(auto &layer : m_Layers)
+            layer->OnDetach();
     }
 } // Rasel

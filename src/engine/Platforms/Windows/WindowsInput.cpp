@@ -4,7 +4,6 @@
 
 #include "WindowsInput.h"
 
-
 namespace Rasel {
     Scope<Input> Input::s_Instance = CreateScope<WindowsInput>();
     

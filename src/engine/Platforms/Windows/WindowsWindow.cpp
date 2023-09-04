@@ -17,8 +17,8 @@ namespace Rasel {
         RZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
     }
     
-    Window* Window::Create(const WindowProps& props) {
-        return new WindowsWindow(props);
+    Scope<Window> Window::Create(const WindowProps& props) {
+        return CreateScope<WindowsWindow>(props);
     }
     
     WindowsWindow::WindowsWindow(const WindowProps& props) {
@@ -37,7 +37,6 @@ namespace Rasel {
         RZ_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
         
         if(s_GLFWWindowCount == 0) {
-            // TODO: glfwTerminate on system shutdown
             int success = glfwInit();
             RZ_CORE_ASSERT(success, "Could not initialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);

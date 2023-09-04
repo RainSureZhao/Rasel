@@ -36,5 +36,9 @@ namespace Rasel {
         RendererCommand::SetViewPort(0, 0, width, height);
     }
 
+    void Renderer::Shutdown() {
+        Renderer2D::Shutdown();
+    }
+
 
 } // Rasel

@@ -3,10 +3,9 @@
 //
 
 #include "RendererCommand.h"
-#include "OpenGLRendererAPI.h"
 
 namespace Rasel {
     
-    Scope<RendererAPI> RendererCommand::s_RendererAPI = CreateScope<OpenGLRendererAPI>();
+    Scope<RendererAPI> RendererCommand::s_RendererAPI = RendererAPI::Create();
     
 } // Rasel

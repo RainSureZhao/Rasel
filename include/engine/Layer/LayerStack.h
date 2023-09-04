@@ -12,8 +12,8 @@ namespace Rasel {
     using LayerVectorIter = std::vector<Scope<Layer>>::iterator;
     class LayerStack {
     public:
-        LayerStack();
-        ~LayerStack() = default;
+        LayerStack() = default;
+        ~LayerStack();
         
         void PushLayer(Scope<Layer> layer);
         void PushOverlay(Scope<Layer> overlay);

@@ -17,7 +17,7 @@ namespace Rasel{
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
         s_Instance = Rasel::Ref<Application>(this);
-        m_Window = Rasel::Scope<Window>(Window::Create());
+        m_Window = Window::Create();
         m_Window->SetEventCallback([this](auto && PH1) { Application::OnEvent(std::forward<decltype(PH1)>(PH1)); });
         
         Renderer::Init();
@@ -81,5 +81,9 @@ namespace Rasel{
         Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
         
         return false;
+    }
+
+    Application::~Application() {
+        Renderer::Shutdown();
     }
 }
