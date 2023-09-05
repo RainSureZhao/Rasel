@@ -28,6 +28,7 @@ namespace Rasel {
     }
 
     void Renderer::Init() {
+        RZ_PROFILE_FUNCTION();
         RendererCommand::Init();
         Renderer2D::Init();
     }

@@ -7,6 +7,7 @@
 #include "GLFW/glfw3.h"
 #include "Core.h"
 #include "Renderer.h"
+#include "Instrumentor.h"
 
 namespace Rasel{
     Scope<Application> Application::s_Instance = nullptr;
@@ -14,6 +15,7 @@ namespace Rasel{
     
     Application::Application()
     {
+        RZ_PROFILE_FUNCTION();
         RZ_CORE_ASSERT(!s_Instance, "Application already exists!");
         std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
         s_Instance = Rasel::Scope<Application>(this);
@@ -44,6 +46,7 @@ namespace Rasel{
     }
 
     void Application::OnEvent(Event &e) {
+        RZ_PROFILE_FUNCTION();
         EventDispatcher dispatcher(e);
         
         dispatcher.Dispatch<WindowCloseEvent>([this](auto &&PH1){ return OnWindowClosed(std::forward<decltype(PH1)>(PH1));});
@@ -65,10 +68,14 @@ namespace Rasel{
     }
 
     void Application::PushLayer(Scope<Layer> layer) {
+        RZ_PROFILE_FUNCTION();
+        layer->OnAttach();
         m_LayerStack.PushLayer(std::move(layer));
     }
 
     void Application::PushOverlay(Scope<Layer> overlay) {
+        RZ_PROFILE_FUNCTION();
+        overlay->OnAttach();
         m_LayerStack.PushOverlay(std::move(overlay));
     }
 
@@ -84,6 +91,7 @@ namespace Rasel{
     }
 
     Application::~Application() {
+        RZ_PROFILE_FUNCTION();
         Renderer::Shutdown();
     }
 }

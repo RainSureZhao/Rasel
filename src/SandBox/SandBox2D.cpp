@@ -4,22 +4,21 @@
 
 #include "SandBox2D.h"
 #include "imgui.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "OpenGLShader.h"
 #include "stdafx.h"
 
 SandBox2D::SandBox2D() : Layer("SandBox2D"), m_CameraController(1280.0f / 720.0f){
 }
 
 void SandBox2D::OnAttach() {
+    RZ_PROFILE_FUNCTION();
     std::filesystem::current_path(R"(E:\Code\Cpp_project\Rasel)");
     m_CheckerboardTexture = Rasel::Texture2D::Create(R"(assets/textures/Checkerboard.png)");
 }
 
 void SandBox2D::OnDetach() {
-    
+    RZ_PROFILE_FUNCTION();
 }
 
 void SandBox2D::OnUpdate(Rasel::Timestep ts) {
@@ -28,10 +27,7 @@ void SandBox2D::OnUpdate(Rasel::Timestep ts) {
     RZ_PROFILE_FUNCTION();
 
     // Update
-    {
-        RZ_PROFILE_SCOPE("CameraController::OnUpdate");
-        m_CameraController.OnUpdate(ts);
-    }
+    m_CameraController.OnUpdate(ts);
     
     //Render
     {

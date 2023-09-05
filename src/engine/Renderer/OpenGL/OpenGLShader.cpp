@@ -17,6 +17,8 @@ namespace Rasel {
     }
     
     OpenGLShader::OpenGLShader(const std::string& name, const std::string &vertexShaderFile, const std::string &fragmentShaderFile) : m_Name(name) {
+        RZ_PROFILE_FUNCTION();
+        
         auto VertexShader = glCreateShader(GL_VERTEX_SHADER);
         auto FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -228,7 +230,6 @@ namespace Rasel {
             glDetachShader(program, id);
             glDeleteShader(id);
         }
-        
     }
 
     OpenGLShader::OpenGLShader(const std::string &filepath) {

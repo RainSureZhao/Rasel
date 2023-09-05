@@ -7,12 +7,10 @@
 namespace Rasel {
     
     void LayerStack::PushLayer(Scope<Layer> layer) {
-        layer->OnAttach();
         m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, std::move(layer));
         m_LayerInsertIndex ++;
     }
     void LayerStack::PushOverlay(Scope<Layer> overlay) {
-        overlay->OnAttach();
         m_Layers.emplace_back(std::move(overlay));
     }
     void LayerStack::PopLayer(Scope<Layer> layer) {

@@ -15,6 +15,7 @@ namespace Rasel {
     }
 
     void OrthographicCameraController::OnUpdate(Rasel::Timestep ts) {
+        RZ_PROFILE_FUNCTION();
         if (Input::IsKeyPressed(RZ_KEY_A)) {
             m_CameraPosition.x -= std::cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
             m_CameraPosition.y -= std::sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
@@ -49,12 +50,14 @@ namespace Rasel {
     }
     
     void OrthographicCameraController::OnEvent(Rasel::Event &e) {
+        RZ_PROFILE_FUNCTION();
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<MouseScrolledEvent>([this](auto &&PH1){ return OnMouseScrolled(std::forward<decltype(PH1)>(PH1));});
         dispatcher.Dispatch<WindowResizeEvent>([this](auto &&PH1){ return OnWindowResized(std::forward<decltype(PH1)>(PH1));});
     }
 
     bool OrthographicCameraController::OnMouseScrolled(Rasel::MouseScrolledEvent &e) {
+        RZ_PROFILE_FUNCTION();
         m_ZoomLevel -= e.GetYOffset() * 0.25f;
         m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -62,6 +65,7 @@ namespace Rasel {
     }
 
     bool OrthographicCameraController::OnWindowResized(Rasel::WindowResizeEvent &e) {
+        RZ_PROFILE_FUNCTION();
         m_AspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;

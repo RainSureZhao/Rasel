@@ -13,6 +13,7 @@ namespace Rasel {
     }
 
     void OpenGLContext::Init() {
+        RZ_PROFILE_FUNCTION();
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         RZ_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -35,6 +36,7 @@ namespace Rasel {
     }
 
     void OpenGLContext::SwapBuffers() {
+        RZ_PROFILE_FUNCTION();
         glfwSwapBuffers(m_WindowHandle);
     }
 } // Rasel
