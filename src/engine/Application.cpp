@@ -3,6 +3,8 @@
 //
         
 #include "Application.h"
+
+#include <ranges>
 #include "Log.h"
 #include "GLFW/glfw3.h"
 #include "Core.h"
@@ -52,13 +54,12 @@ namespace Rasel{
         dispatcher.Dispatch<WindowCloseEvent>([this](auto &&PH1){ return OnWindowClosed(std::forward<decltype(PH1)>(PH1));});
         dispatcher.Dispatch<WindowResizeEvent>([this](auto &&PH1){ return OnWindowResize(std::forward<decltype(PH1)>(PH1));});
         
-        if(m_LayerStack.size()) {
-            for(auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
-                (*--it)->OnEvent(e);
-                if(e.Handled)
-                    break;
-            }
+        for(auto & it : std::ranges::reverse_view(m_LayerStack)) {
+            it->OnEvent(e);
+            if(e.Handled)
+                break;
         }
+        
         RZ_CORE_TRACE("{0}", e);
     }
 

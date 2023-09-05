@@ -7,6 +7,8 @@
 
 #include "Event.h"
 #include "stdafx.h"
+#include "KeyCodes.h"
+#include "MouseCodes.h"
 
 namespace Rasel {
     class MouseMovedEvent : public Event {
@@ -48,17 +50,17 @@ namespace Rasel {
     
     class MouseButtonEvent : public Event {
     public:
-        [[nodiscard]] inline int GetMouseButton() const {return m_Button;}
+        [[nodiscard]] inline MouseCode GetMouseButton() const {return m_Button;}
         
         EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput);
     protected:
-        explicit MouseButtonEvent(int button) : m_Button(button) {}
-        int m_Button;
+        explicit MouseButtonEvent(MouseCode button) : m_Button(button) {}
+        MouseCode m_Button;
     };
     
     class MouseButtonPressedEvent : public MouseButtonEvent {
     public:
-        explicit MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
+        explicit MouseButtonPressedEvent(MouseCode button) : MouseButtonEvent(button) {}
         
         [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;
@@ -70,7 +72,7 @@ namespace Rasel {
     
     class MouseButtonReleasedEvent : public MouseButtonEvent {
     public:
-        explicit MouseButtonReleasedEvent(int Button) : MouseButtonEvent(Button) {}
+        explicit MouseButtonReleasedEvent(MouseCode Button) : MouseButtonEvent(Button) {}
     
         [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;

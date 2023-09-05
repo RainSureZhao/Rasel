@@ -29,6 +29,7 @@ namespace Rasel {
 #define RZ_CORE_ERROR(...)    ::Rasel::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define RZ_CORE_FATAL(...)    ::Rasel::Log::GetCoreLogger()->fatal(__VA_ARGS__)
 #define RZ_CORE_ASSERT(x, ...) { if(!(x)) { RZ_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define RZ_CORE_CRITICAL(...) ::Rasel::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client log macros
 #define RZ_Client_TRACE(...)    ::Rasel::Log::GetClientLogger()->trace(__VA_ARGS__)

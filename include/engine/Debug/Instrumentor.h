@@ -129,10 +129,32 @@ namespace Rasel {
 
 #define RZ_PROFILE 1
 #if RZ_PROFILE
+
+    // Resolve which function signature macro will be used. Note that this only
+    // is resolved when the (pre)compiler starts, so the syntax highlighting
+    // could mark the wrong one in your editor!
+    #if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+    #define HZ_FUNC_SIG __PRETTY_FUNCTION__
+    #elif defined(__DMC__) && (__DMC__ >= 0x810)
+    #define HZ_FUNC_SIG __PRETTY_FUNCTION__
+        #elif defined(__FUNCSIG__)
+            #define HZ_FUNC_SIG __FUNCSIG__
+        #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+            #define HZ_FUNC_SIG __FUNCTION__
+        #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+            #define HZ_FUNC_SIG __FUNC__
+        #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+            #define HZ_FUNC_SIG __func__
+        #elif defined(__cplusplus) && (__cplusplus >= 201103)
+            #define HZ_FUNC_SIG __func__
+        #else
+            #define HZ_FUNC_SIG "HZ_FUNC_SIG unknown!"
+    #endif
+
     #define RZ_PROFILE_BEGIN_SESSION(name, filepath) ::Rasel::Instrumentor::Get().BeginSession(name, filepath)
     #define RZ_PROFILE_END_SESSION() ::Rasel::Instrumentor::Get().EndSession()
     #define RZ_PROFILE_SCOPE(name) ::Rasel::InstrumentationTimer timer##__LINE__(name);
-    #define RZ_PROFILE_FUNCTION() RZ_PROFILE_SCOPE(__PRETTY_FUNCTION__)
+    #define RZ_PROFILE_FUNCTION() RZ_PROFILE_SCOPE(HZ_FUNC_SIG)
 #else
     #define RZ_PROFILE_BEGIN_SESSION(name, filepath)
     #define RZ_PROFILE_END_SESSION()

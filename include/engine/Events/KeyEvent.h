@@ -13,19 +13,19 @@ namespace Rasel {
     
     class KeyEvent : public Event {
     public:
-        [[nodiscard]] inline int GetKeyCode() const {return m_KeyCode;}
+        [[nodiscard]] inline KeyCode GetKeyCode() const {return m_KeyCode;}
         
         EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
         
     protected:
-        explicit KeyEvent(int keycode) : m_KeyCode(keycode) {}
+        explicit KeyEvent(KeyCode keycode) : m_KeyCode(keycode) {}
         
-        int m_KeyCode;
+        KeyCode m_KeyCode;
     };
     
     class KeyPressedEvent : public KeyEvent {
     public:
-        KeyPressedEvent(int keycode, int repeatCount) : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
+        KeyPressedEvent(KeyCode keycode, int repeatCount) : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
         [[nodiscard]] inline int GetRepeatCount() const  { return m_RepeatCount;}
         
         [[nodiscard]] std::string ToString() const override {
@@ -40,7 +40,7 @@ namespace Rasel {
     
     class KeyReleasedEvent: public KeyEvent {
     public:
-        explicit KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
+        explicit KeyReleasedEvent(KeyCode keycode) : KeyEvent(keycode) {}
         
         [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;
@@ -53,7 +53,7 @@ namespace Rasel {
     
     class KeyTypedEvent: public KeyEvent {
     public:
-        explicit KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
+        explicit KeyTypedEvent(KeyCode keycode) : KeyEvent(keycode) {}
         
         [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;

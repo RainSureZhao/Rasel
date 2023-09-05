@@ -9,6 +9,8 @@
 #include "MouseEvent.h"
 #include "KeyEvent.h"
 #include "Log.h"
+#include "KeyCodes.h"
+#include "MouseCodes.h"
 
 namespace Rasel {
     static uint8_t s_GLFWWindowCount = 0;
@@ -41,10 +43,16 @@ namespace Rasel {
             RZ_CORE_ASSERT(success, "Could not initialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
         }
-        
-        m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(), nullptr, nullptr);
-        s_GLFWWindowCount ++;
-        
+        {
+            RZ_PROFILE_FUNCTION();
+        #if defined(RZ_DEBUG)
+                if(Renderer::GetAPI() == RendererAPI::API::OpenGL)
+                    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);    
+        #endif
+            m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(), nullptr, nullptr);
+            s_GLFWWindowCount ++;
+        }
+
         m_Context = CreateScope<OpenGLContext>(m_Window);
         m_Context->Init();
         
@@ -72,17 +80,17 @@ namespace Rasel {
             switch(action)
             {
                 case GLFW_PRESS: {
-                    KeyPressedEvent event(key, 0);
+                    KeyPressedEvent event(static_cast<KeyCode>(key), 0);
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE: {
-                    KeyReleasedEvent event(key);
+                    KeyReleasedEvent event(static_cast<KeyCode>(key));
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_REPEAT: {
-                    KeyPressedEvent event(key, 1);
+                    KeyPressedEvent event(static_cast<KeyCode>(key), 1);
                     data.EventCallback(event);
                     break;
                 }
@@ -97,12 +105,12 @@ namespace Rasel {
             switch(action)
             {
                 case GLFW_PRESS: {
-                    MouseButtonPressedEvent event(button);
+                    MouseButtonPressedEvent event(static_cast<MouseCode>(button));
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE: {
-                    MouseButtonReleasedEvent event(button);
+                    MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
                     data.EventCallback(event);
                     break;
                 }
@@ -127,7 +135,7 @@ namespace Rasel {
         glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keycode) {
            WindowData &data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
            
-           KeyTypedEvent event(static_cast<int>(keycode));
+           KeyTypedEvent event(static_cast<KeyCode>(keycode));
            data.EventCallback(event);
         });
     }
