@@ -8,6 +8,8 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #include "OpenGLShader.h"
+#include "stdafx.h"
+
 SandBox2D::SandBox2D() : Layer("SandBox2D"), m_CameraController(1280.0f / 720.0f){
 }
 
@@ -21,18 +23,31 @@ void SandBox2D::OnDetach() {
 }
 
 void SandBox2D::OnUpdate(Rasel::Timestep ts) {
+
+
+    RZ_PROFILE_FUNCTION();
+
     // Update
-    m_CameraController.OnUpdate(ts);
+    {
+        RZ_PROFILE_SCOPE("CameraController::OnUpdate");
+        m_CameraController.OnUpdate(ts);
+    }
     
     //Render
-    Rasel::RendererCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
-    Rasel::RendererCommand::Clear();
-    
-    Rasel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Rasel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-    Rasel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-    Rasel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
-    Rasel::Renderer2D::EndScene();
+    {
+        RZ_PROFILE_SCOPE("Renderer Prep");
+        Rasel::RendererCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+        Rasel::RendererCommand::Clear();
+    }
+
+    {
+        RZ_PROFILE_SCOPE("Renderer Draw");
+        Rasel::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        Rasel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+        Rasel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+        Rasel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
+        Rasel::Renderer2D::EndScene();
+    }
 }
 
 void SandBox2D::OnImGuiRender() {

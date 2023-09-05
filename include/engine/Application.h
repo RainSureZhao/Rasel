@@ -20,7 +20,7 @@ namespace Rasel {
     class Application {
     public:
         Application();
-        ~Application();
+        virtual ~Application();
         void OnEvent(Event& e);
         void Run();
         
@@ -43,7 +43,7 @@ namespace Rasel {
         float m_LastFrameTime = 0.0f;
         
     private:
-        static Ref<Application> s_Instance;
+        static Scope<Application> s_Instance;
     };    
     
     // To be defined in CLIENT

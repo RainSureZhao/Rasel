@@ -134,5 +134,5 @@ public:
 };
 
 Rasel::Scope<Rasel::Application> Rasel::CreateApplication() {
-    return std::make_unique<SandBox>();
+    return CreateScope<SandBox>();
 }

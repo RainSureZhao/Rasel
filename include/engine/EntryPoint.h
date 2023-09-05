@@ -10,10 +10,19 @@
 
 int main(int argc, char** argv)
 {
+    RZ_PROFILE_BEGIN_SESSION("Initial Log", "RaselProfile-Log.json");
     Rasel::Log::Init();
-    RZ_CORE_WARN("Initialized Log!");
+    RZ_PROFILE_END_SESSION();
+    
+    
+    RZ_PROFILE_BEGIN_SESSION("Startup", "RaselProfile-Startup.json");
     auto App = Rasel::CreateApplication();
+    RZ_PROFILE_END_SESSION();
+    
+    RZ_PROFILE_BEGIN_SESSION("Runtime", "RaselProfile-Runtime.json");
     App->Run();
+    RZ_PROFILE_END_SESSION();
+    
     return 0;
 }
 
