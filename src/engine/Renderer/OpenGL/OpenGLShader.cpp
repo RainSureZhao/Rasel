@@ -256,4 +256,8 @@ namespace Rasel {
     void OpenGLShader::SetMat4(const std::string &name, const glm::mat4 &value) {
         UploadUniformMat4(name, value);
     }
+
+    void OpenGLShader::SetFloat(const std::string &name, float value) {
+        UploadUniformFloat(name, value);
+    }
 } // Rasel
