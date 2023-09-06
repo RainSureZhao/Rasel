@@ -4,7 +4,7 @@
 #include "Input.h"
 #include "Log.h"
 
-#define RZ_PLATFORM_WINDOWS 1
+
 
 #ifdef RZ_PLATFORM_WINDOWS
     #include "WindowsInput.h"

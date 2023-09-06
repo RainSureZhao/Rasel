@@ -6,6 +6,9 @@
 #define RASEL_CORE_H
 #include <memory>
 
+#define RZ_PLATFORM_WINDOWS 1
+#define RZ_PLATFORM_WINDOWS 1
+
 namespace Rasel {
     template<typename T>
     using Scope = std::unique_ptr<T>;
