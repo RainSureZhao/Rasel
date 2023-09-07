@@ -145,7 +145,12 @@ namespace Rasel {
         auto location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
-
+    
+    void OpenGLShader::UploadUniformIntArray(const std::string& name, int* value, uint32_t count) const {
+        auto location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform1iv(location, count, value);
+    }
+    
     std::string OpenGLShader::ReadFile(const std::string &filepath) {
         std::ifstream FileSource(filepath);
         if(!FileSource.is_open()) {
@@ -259,5 +264,9 @@ namespace Rasel {
 
     void OpenGLShader::SetFloat(const std::string &name, float value) {
         UploadUniformFloat(name, value);
+    }
+
+    void OpenGLShader::SetIntArray(const std::string &name, int *value, uint32_t count) {
+        UploadUniformIntArray(name, value, count);
     }
 } // Rasel

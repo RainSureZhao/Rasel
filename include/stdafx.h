@@ -16,6 +16,7 @@
 #include <unordered_set>
 #include <cstdint>
 #include <filesystem>
+#include <array>
 #include "Instrumentor.h"
 
 #endif //RASEL_STDAFX_H
