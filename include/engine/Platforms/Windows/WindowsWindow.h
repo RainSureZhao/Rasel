@@ -23,11 +23,11 @@ namespace Rasel {
         [[nodiscard]] unsigned int GetHeight() const override { return m_Data.Height; }
         
         // Window attributes
-        inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback;}
+        void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback;}
         void SetVSync(bool enabled) override;
         [[nodiscard]] bool IsVSync() const override;
         
-        inline virtual void* GetNativeWindow() const override { return m_Window; }
+        virtual void* GetNativeWindow() const override { return m_Window; }
         
     private:
         void Init(const WindowProps& props);

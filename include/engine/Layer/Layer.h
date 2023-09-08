@@ -20,7 +20,7 @@ namespace Rasel {
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event &event) {}
     
-        [[nodiscard]] inline const std::string& GetName() const {return m_DebugName;}
+        [[nodiscard]] const std::string& GetName() const {return m_DebugName;}
     protected:
         std::string m_DebugName;
     };

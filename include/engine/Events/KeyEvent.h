@@ -13,7 +13,7 @@ namespace Rasel {
     
     class KeyEvent : public Event {
     public:
-        [[nodiscard]] inline KeyCode GetKeyCode() const {return m_KeyCode;}
+        [[nodiscard]] KeyCode GetKeyCode() const {return m_KeyCode;}
         
         EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
         
@@ -26,7 +26,7 @@ namespace Rasel {
     class KeyPressedEvent : public KeyEvent {
     public:
         KeyPressedEvent(KeyCode keycode, int repeatCount) : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
-        [[nodiscard]] inline int GetRepeatCount() const  { return m_RepeatCount;}
+        [[nodiscard]] int GetRepeatCount() const  { return m_RepeatCount;}
         
         [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;

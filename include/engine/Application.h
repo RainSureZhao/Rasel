@@ -28,9 +28,9 @@ namespace Rasel {
         void PushLayer(Scope<Layer> layer);
         void PushOverlay(Scope<Layer> overlay);
         
-        inline Window& GetWindow() { return *m_Window; }
+        Window& GetWindow() { return *m_Window; }
         
-        inline static Application& Get() { return *s_Instance;}
+        static Application& Get() { return *s_Instance;}
         
     private:
         bool OnWindowClosed(WindowCloseEvent& e);

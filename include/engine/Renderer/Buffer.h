@@ -78,8 +78,8 @@ namespace Rasel {
             CalculateOffsetAndStride();
         }
         
-        [[nodiscard]] inline uint32_t GetStride() const { return m_Stride;}
-        [[nodiscard]] inline const std::vector<BufferElement>& GetElements() const {return m_Element;}
+        [[nodiscard]] uint32_t GetStride() const { return m_Stride;}
+        [[nodiscard]] const std::vector<BufferElement>& GetElements() const {return m_Element;}
         
         std::vector<BufferElement>::iterator begin() { return m_Element.begin();}
         std::vector<BufferElement>::iterator end() { return m_Element.end();}
