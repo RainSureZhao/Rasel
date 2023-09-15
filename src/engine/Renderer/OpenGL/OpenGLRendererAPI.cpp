@@ -53,7 +53,7 @@ namespace Rasel {
     }
 
     void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount) {
-        auto count = indexCount ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
+        auto count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, static_cast<int>(count), GL_UNSIGNED_INT, nullptr);
         glBindTexture(GL_TEXTURE_2D, 0);
     }

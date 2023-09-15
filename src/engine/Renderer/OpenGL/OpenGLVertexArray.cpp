@@ -2,10 +2,8 @@
 // Created by 赵润朔 on 2023/8/3.
 //
 
-#include "stdafx.h"
 #include "OpenGLVertexArray.h"
 #include "glad/glad.h"
-#include "Core.h"
 
 namespace Rasel {
     static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
@@ -26,6 +24,7 @@ namespace Rasel {
         }
 
         RZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+        
         return 0;
     }
     
@@ -54,14 +53,40 @@ namespace Rasel {
         
         const auto& layout = vertexBuffer->GetLayout();
         for(const auto& element : layout) {
-            glEnableVertexAttribArray(m_VertexBufferIndex);
-            glVertexAttribPointer(m_VertexBufferIndex,
-              static_cast<GLint>(element.GetComponentCount()),
-              ShaderDataTypeToOpenGLBaseType(element.Type),
-              element.Normalized ? GL_TRUE : GL_FALSE,
-              static_cast<GLint>(layout.GetStride()),
-              reinterpret_cast<const void*>(element.Offset));
-            m_VertexBufferIndex ++;
+            switch(element.Type) {
+                case ShaderDataType::Float:
+                case ShaderDataType::Float2:
+                case ShaderDataType::Float3:
+                case ShaderDataType::Float4:
+                case ShaderDataType::Mat3:
+                case ShaderDataType::Mat4: {
+                    glEnableVertexAttribArray(m_VertexBufferIndex);
+                    glVertexAttribPointer(m_VertexBufferIndex,
+                                          static_cast<int>(element.GetComponentCount()),
+                                          ShaderDataTypeToOpenGLBaseType(element.Type),
+                                          element.Normalized ? GL_TRUE : GL_FALSE,
+                                          static_cast<int>(layout.GetStride()),
+                                          reinterpret_cast<void*>(element.Offset));
+                    m_VertexBufferIndex++;
+                    break;
+                }
+                case ShaderDataType::Int:
+                case ShaderDataType::Int2:
+                case ShaderDataType::Int3:
+                case ShaderDataType::Int4:
+                case ShaderDataType::Bool: {
+                    glEnableVertexAttribArray(m_VertexBufferIndex);
+                    glVertexAttribIPointer(m_VertexBufferIndex,
+                                           static_cast<int>(element.GetComponentCount()),
+                                           ShaderDataTypeToOpenGLBaseType(element.Type),
+                                           static_cast<int>(layout.GetStride()),
+                                           reinterpret_cast<void*>(element.Offset));
+                    m_VertexBufferIndex++;
+                    break;
+                }
+                default:
+                    RZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+            }
         }
         m_VertexBuffers.push_back(vertexBuffer);
     }
