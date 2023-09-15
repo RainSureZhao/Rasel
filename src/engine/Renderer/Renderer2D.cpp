@@ -104,6 +104,7 @@ namespace Rasel {
     void Renderer2D::Shutdown() {
         RZ_PROFILE_FUNCTION();
         
+        delete[] s_Data.QuadVertexBufferBase;
     }
 
     void Renderer2D::BeginScene(const OrthographicCamera &camera) {
@@ -317,6 +318,7 @@ namespace Rasel {
     }
 
     void Renderer2D::Flush() {
+        if(s_Data.QuadIndexCount == 0) return;
         // Bind Textures
         for(uint32_t i = 0; i < s_Data.TextureSlotIndex; i ++) {
             s_Data.TextureSlots[i]->Bind(i);
